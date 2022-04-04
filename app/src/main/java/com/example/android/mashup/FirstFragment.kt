@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.databinding.FragmentFirstBinding
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -25,6 +26,11 @@ class FirstFragment : Fragment() {
     ): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
+
+        binding.fab.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_FirstFragment_to_creatorFragment)
+        }
+
         return binding.root
 
     }

@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_creatorFragment"
+            app:destination="@id/creatorFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -24,5 +27,35 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_detailsViewFullscreen"
+            app:destination="@id/detailsViewFullscreen" />
     </fragment>
+    <fragment
+        android:id="@+id/detailsViewFullscreen"
+        android:name="com.example.android.mashup.DetailsViewFullscreen"
+        android:label="fragment_details_view_fullscreen"
+        tools:layout="@layout/fragment_details_view_fullscreen" />
+    <fragment
+        android:id="@+id/creatorFragment"
+        android:name="com.example.android.mashup.CreatorFragment"
+        android:label="fragment_creator"
+        tools:layout="@layout/fragment_creator" >
+        <action
+            android:id="@+id/action_creatorFragment_to_creatorChooseVideoFragment"
+            app:destination="@id/creatorChooseVideoFragment" />
+        <action
+            android:id="@+id/action_creatorFragment_to_creatorChooseAudioFragment"
+            app:destination="@id/creatorChooseAudioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/creatorChooseVideoFragment"
+        android:name="com.example.android.mashup.CreatorChooseVideoFragment"
+        android:label="fragment_creator_choose_video"
+        tools:layout="@layout/fragment_creator_choose_video" />
+    <fragment
+        android:id="@+id/creatorChooseAudioFragment"
+        android:name="com.example.android.mashup.CreatorChooseAudioFragment"
+        android:label="fragment_creator_choose_audio"
+        tools:layout="@layout/fragment_creator_choose_audio" />
 </navigation>
