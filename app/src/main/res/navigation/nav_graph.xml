@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.example.android.mashup.FirstFragment"
+        android:name="com.example.android.mashup.Feed.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.android.mashup.SecondFragment"
+        android:name="com.example.android.mashup.Details.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
@@ -30,15 +30,18 @@
         <action
             android:id="@+id/action_SecondFragment_to_detailsViewFullscreen"
             app:destination="@id/detailsViewFullscreen" />
+        <argument
+            android:name="video"
+            app:argType="com.example.android.mashup.Video" />
     </fragment>
     <fragment
         android:id="@+id/detailsViewFullscreen"
-        android:name="com.example.android.mashup.DetailsViewFullscreen"
+        android:name="com.example.android.mashup.DetailsFullscreen.DetailsViewFullscreen"
         android:label="fragment_details_view_fullscreen"
         tools:layout="@layout/fragment_details_view_fullscreen" />
     <fragment
         android:id="@+id/creatorFragment"
-        android:name="com.example.android.mashup.CreatorFragment"
+        android:name="com.example.android.mashup.Creator.CreatorFragment"
         android:label="fragment_creator"
         tools:layout="@layout/fragment_creator" >
         <action
@@ -50,12 +53,12 @@
     </fragment>
     <fragment
         android:id="@+id/creatorChooseVideoFragment"
-        android:name="com.example.android.mashup.CreatorChooseVideoFragment"
+        android:name="com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragment"
         android:label="fragment_creator_choose_video"
         tools:layout="@layout/fragment_creator_choose_video" />
     <fragment
         android:id="@+id/creatorChooseAudioFragment"
-        android:name="com.example.android.mashup.CreatorChooseAudioFragment"
+        android:name="com.example.android.mashup.CreatorAudio.CreatorChooseAudioFragment"
         android:label="fragment_creator_choose_audio"
         tools:layout="@layout/fragment_creator_choose_audio" />
 </navigation>

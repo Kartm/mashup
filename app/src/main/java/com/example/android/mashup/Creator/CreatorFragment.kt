@@ -1,10 +1,13 @@
-package com.example.android.mashup
+package com.example.android.mashup.Creator
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.android.mashup.R
+import com.example.android.mashup.databinding.FragmentCreatorBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -13,13 +16,19 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CreatorChooseVideoFragment.newInstance] factory method to
+ * Use the [CreatorFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreatorChooseVideoFragment : Fragment() {
+class CreatorFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private var _binding: FragmentCreatorBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +42,20 @@ class CreatorChooseVideoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_creator_choose_video, container, false)
+        _binding = FragmentCreatorBinding.inflate(inflater, container, false);
+
+        binding.selectVideoButton.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseVideoFragment)
+        }
+
+        binding.selectAudioButton.setOnClickListener { view ->
+            findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
+        }
+
+        return binding.root
     }
 
     companion object {
@@ -44,12 +65,12 @@ class CreatorChooseVideoFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CreatorChooseVideoFragment.
+         * @return A new instance of fragment CreatorFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CreatorChooseVideoFragment().apply {
+            CreatorFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
