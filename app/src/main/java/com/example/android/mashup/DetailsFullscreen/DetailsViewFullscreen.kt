@@ -1,4 +1,4 @@
-package com.example.android.mashup
+package com.example.android.mashup.DetailsFullscreen
 
 import android.os.Bundle
 import android.os.Handler
