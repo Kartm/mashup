@@ -1,5 +1,6 @@
 package com.example.android.mashup.Creator
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,11 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
+
+import android.widget.VideoView
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +60,13 @@ class CreatorFragment : Fragment() {
         binding.selectAudioButton.setOnClickListener { view ->
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
+
+
+        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
+        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
+
+        binding.videoView.setVideoURI(videoUri)
+        binding.videoView.start()
 
         return binding.root
     }
