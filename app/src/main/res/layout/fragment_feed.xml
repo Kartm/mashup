@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Feed.FirstFragment">
+    tools:context=".Feed.FeedFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -24,5 +24,7 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/icon_add_white"
+        android:backgroundTint="@color/primaryColor"
+        android:tint="@color/primaryTextColor"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
