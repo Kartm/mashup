@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.mashup.*
-import com.example.android.mashup.databinding.FragmentFirstBinding
+import com.example.android.mashup.databinding.FragmentFeedBinding
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(), MashupClickListener {
+class FeedFragment : Fragment(), MashupClickListener {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentFeedBinding? = null
 
 
     // This property is only valid between onCreateView and
@@ -28,7 +28,7 @@ class FirstFragment : Fragment(), MashupClickListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val firstFragment = this
 
@@ -65,7 +65,7 @@ class FirstFragment : Fragment(), MashupClickListener {
 //        val intent = Intent(context, SecondFragment::class.java)
 //        intent.putExtra(VIDEO_ID_EXTRA, video.id)
 //        startActivity(intent)
-        val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(video)
+        val action = FeedFragmentDirections.actionFirstFragmentToSecondFragment(video)
         findNavController().navigate(action)
     }
 

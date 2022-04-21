@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.example.android.mashup.databinding.FragmentSecondBinding
+import com.example.android.mashup.databinding.FragmentDetailsBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
-    private val args: SecondFragmentArgs by navArgs()
+    private var _binding: FragmentDetailsBinding? = null
+    private val args: DetailsFragmentArgs by navArgs()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,7 +25,7 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
         binding.description.text = args.video.description
         binding.title.text = args.video.title
