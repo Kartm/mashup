@@ -144,6 +144,8 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
     override fun onSuccess(convertedFile: File, type: String) {
         Log.v("me", "success!");
+
+        binding.videoView.setVideoURI(convertedFile.toUri())
     }
 
     override fun onFailure(error: Exception) {

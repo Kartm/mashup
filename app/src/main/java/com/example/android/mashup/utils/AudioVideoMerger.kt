@@ -181,7 +181,14 @@ class AudioVideoMerger private constructor(private val context: Context) {
 
         val outputLocation = Utils.getConvertedFile(outputPath, outputFileName)
 
-        val query = arrayOf("-i", video!!.path, "-i", audio!!.path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
+        // todo replace audio stream https://superuser.com/a/277667
+        // todo -shortest https://superuser.com/questions/277642/how-to-merge-audio-and-video-file-in-ffmpeg#comment1484018_862903
+
+        // todo -ss 10 -i audio.mp3 starts audio at 10s
+        // todo -t 6 -i audio.mp3 takes just 6s of audio
+        // you can use time format ffmpeg -i input.mp3 -ss 00:02:54.583 -acodec copy output.mp3
+
+        val query = arrayOf("-i", video!!.path, "-ss", "10", "-t", "15", "-i", audio!!.path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
 
         CallBackOfQuery().callQuery(query, object : FFmpegCallBack {
             override fun statisticsProcess(statistics: Statistics) {
