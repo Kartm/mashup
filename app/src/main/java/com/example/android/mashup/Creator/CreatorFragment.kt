@@ -15,7 +15,6 @@ import android.widget.VideoView
 import com.example.android.mashup.utils.AudioVideoMerger
 import com.example.android.mashup.utils.FFMpegCallback
 import com.example.android.mashup.utils.Utils
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg
 import java.io.File
 import android.os.Environment
 import androidx.core.net.toUri
@@ -90,12 +89,8 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
 
         binding.testButton.setOnClickListener {
-
-            //Kill previous running process
-            FFmpeg.getInstance(context).killRunningProcesses()
-
             val folder = File(
-                requireContext().getExternalFilesDir(Environment.DIRECTORY_MOVIES),
+                requireContext().getExternalFilesDir(null),
                 "Mashup"
             )
             if (!folder.exists()) {
@@ -103,16 +98,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             }
             val filename = File(folder, "video")
 
-
-            Log.v("me", filename!!.path);
-            Log.v("me", filename!!.absolutePath);
-            Log.v("me", filename!!.toString());
-            Log.v("me", filename!!.absoluteFile.absolutePath);
-            Log.v("me", filename!!.absoluteFile.canonicalPath);
-            Log.v("me", filename!!.absoluteFile.path);
-
-
-            if (!FFmpeg.getInstance(context).isFFmpegCommandRunning) {
                 AudioVideoMerger.with(requireContext())
                     .setAudioFile(audioFile)
                     .setVideoFile(videoFile)
@@ -121,8 +106,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                     .setCallback(this)
                     .merge()
 
-//                ProgressDialog.show(supportFragmentManager, AudioVideoMerger.TAG)
-            }
+            // to find the file, go to SD Card -> /Android/data/com.example.android.mashup/files/Mashup/video/
         }
 
 

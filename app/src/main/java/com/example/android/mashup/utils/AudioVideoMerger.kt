@@ -1,15 +1,17 @@
 package com.example.android.mashup.utils
 
 import android.content.Context
-import com.github.hiteshsondhi88.libffmpeg.ExecuteBinaryResponseHandler
-import com.github.hiteshsondhi88.libffmpeg.FFmpeg
-import com.github.hiteshsondhi88.libffmpeg.exceptions.FFmpegCommandAlreadyRunningException
+import com.simform.videooperations.CallBackOfQuery
+import com.simform.videooperations.FFmpegCallBack
 
 import java.io.File
 import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
+import com.simform.videooperations.LogMessage
+import com.simform.videooperations.Statistics
 import java.io.FileNotFoundException
 import java.io.InputStream
 
@@ -179,38 +181,66 @@ class AudioVideoMerger private constructor(private val context: Context) {
 
         val outputLocation = Utils.getConvertedFile(outputPath, outputFileName)
 
-        val cmd = arrayOf("-i", video!!.path, "-i", audio!!.path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
+        val query = arrayOf("-i", video!!.path, "-i", audio!!.path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
 
-        try {
-            FFmpeg.getInstance(context).execute(cmd, object : ExecuteBinaryResponseHandler() {
-                override fun onStart() {}
+        CallBackOfQuery().callQuery(query, object : FFmpegCallBack {
+            override fun statisticsProcess(statistics: Statistics) {
+                Log.i("FFMPEG LOG : ", statistics.videoFrameNumber.toString())
+            }
 
-                override fun onProgress(message: String?) {
-                    callback!!.onProgress(message!!)
+            override fun process(logMessage: LogMessage) {
+                Log.i("FFMPEG LOG : ", logMessage.text)
+                callback!!.onProgress(logMessage.text)
+            }
+
+            override fun success() {
+                Utils.refreshGallery(outputLocation.path, context)
+                callback!!.onSuccess(outputLocation, OutputType.TYPE_VIDEO)
+            }
+
+            override fun cancel() {
+                callback!!.onFailure(IOException("Canceled"))
+            }
+
+            override fun failed() {
+                if (outputLocation.exists()) {
+                    outputLocation.delete()
                 }
+                callback!!.onFailure(IOException("Failed"))
+            }
 
-                override fun onSuccess(message: String?) {
-                    Utils.refreshGallery(outputLocation.path, context)
-                    callback!!.onSuccess(outputLocation, OutputType.TYPE_VIDEO)
+        })
 
-                }
-
-                override fun onFailure(message: String?) {
-                    if (outputLocation.exists()) {
-                        outputLocation.delete()
-                    }
-                    callback!!.onFailure(IOException(message))
-                }
-
-                override fun onFinish() {
-                    callback!!.onFinish()
-                }
-            })
-        } catch (e: Exception) {
-            callback!!.onFailure(e)
-        } catch (e2: FFmpegCommandAlreadyRunningException) {
-            callback!!.onNotAvailable(e2)
-        }
+//        try {
+//            FFmpeg.getInstance(context).execute(cmd, object : ExecuteBinaryResponseHandler() {
+//                override fun onStart() {}
+//
+//                override fun onProgress(message: String?) {
+//                    callback!!.onProgress(message!!)
+//                }
+//
+//                override fun onSuccess(message: String?) {
+//                    Utils.refreshGallery(outputLocation.path, context)
+//                    callback!!.onSuccess(outputLocation, OutputType.TYPE_VIDEO)
+//
+//                }
+//
+//                override fun onFailure(message: String?) {
+//                    if (outputLocation.exists()) {
+//                        outputLocation.delete()
+//                    }
+//                    callback!!.onFailure(IOException(message))
+//                }
+//
+//                override fun onFinish() {
+//                    callback!!.onFinish()
+//                }
+//            })
+//        } catch (e: Exception) {
+//            callback!!.onFailure(e)
+//        } catch (e2: FFmpegCommandAlreadyRunningException) {
+//            callback!!.onNotAvailable(e2)
+//        }
 
     }
 
