@@ -1,7 +1,9 @@
 package com.example.android.mashup.Creator
 
+import android.app.ProgressDialog
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +11,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
-
 import android.widget.VideoView
-
-
+import com.example.android.mashup.utils.AudioVideoMerger
+import com.example.android.mashup.utils.FFMpegCallback
+import com.example.android.mashup.utils.Utils
+import com.github.hiteshsondhi88.libffmpeg.FFmpeg
+import java.io.File
+import android.os.Environment
+import androidx.core.net.toUri
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CreatorFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreatorFragment : Fragment() {
+class CreatorFragment : Fragment(), FFMpegCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -61,11 +67,68 @@ class CreatorFragment : Fragment() {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
+//        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
+//        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
 
-        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
-        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
+        val videoStream = resources.openRawResource(R.raw.video)
+        val videoFile: File = createTempFile()
 
-        binding.videoView.setVideoURI(videoUri)
+        videoStream.use { input ->
+            videoFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        val audioStream = resources.openRawResource(R.raw.audio)
+        val audioFile: File = createTempFile()
+
+        audioStream.use { input ->
+            audioFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+
+        binding.testButton.setOnClickListener {
+
+            //Kill previous running process
+            FFmpeg.getInstance(context).killRunningProcesses()
+
+            val folder = File(
+                requireContext().getExternalFilesDir(Environment.DIRECTORY_MOVIES),
+                "Mashup"
+            )
+            if (!folder.exists()) {
+                folder.mkdirs()
+            }
+            val filename = File(folder, "video")
+
+
+            Log.v("me", filename!!.path);
+            Log.v("me", filename!!.absolutePath);
+            Log.v("me", filename!!.toString());
+            Log.v("me", filename!!.absoluteFile.absolutePath);
+            Log.v("me", filename!!.absoluteFile.canonicalPath);
+            Log.v("me", filename!!.absoluteFile.path);
+
+
+            if (!FFmpeg.getInstance(context).isFFmpegCommandRunning) {
+                AudioVideoMerger.with(requireContext())
+                    .setAudioFile(audioFile)
+                    .setVideoFile(videoFile)
+                    .setOutputPath(filename!!.absolutePath)
+                    .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+                    .setCallback(this)
+                    .merge()
+
+//                ProgressDialog.show(supportFragmentManager, AudioVideoMerger.TAG)
+            }
+        }
+
+
+
+
+        binding.videoView.setVideoURI(videoFile.toUri())
         binding.videoView.start()
 
         return binding.root
@@ -89,5 +152,29 @@ class CreatorFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onProgress(progress: String) {
+        Log.v("me", progress);
+    }
+
+    override fun onSuccess(convertedFile: File, type: String) {
+        Log.v("me", "success!");
+    }
+
+    override fun onFailure(error: Exception) {
+        Log.v("me", error.toString());
+        error.printStackTrace()
+
+    }
+
+    override fun onNotAvailable(error: Exception) {
+        Log.v("me", "not available");
+
+    }
+
+    override fun onFinish() {
+        Log.v("me", "finish");
+
     }
 }

@@ -30,11 +30,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:text="test"
+        tools:ignore="MissingConstraints" />
+
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="389dp"
         android:layout_height="357dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="187dp" />
+        tools:layout_editor_absoluteY="187dp"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        tools:ignore="MissingConstraints">
+
+        <org.florescu.android.rangeseekbar.RangeSeekBar
+
+            android:id="@+id/rangeSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:activeColor="@color/white"
+            app:alwaysActive="true"
+            app:barHeight="2dp"
+            app:showLabels="false"
+            app:textAboveThumbsColor="#000000" />
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
