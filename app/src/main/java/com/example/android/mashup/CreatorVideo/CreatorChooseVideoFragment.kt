@@ -1,11 +1,16 @@
 package com.example.android.mashup.CreatorVideo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.android.mashup.R
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import com.example.android.mashup.databinding.FragmentCreatorChooseVideoBinding
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +27,12 @@ class CreatorChooseVideoFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
+    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri : Uri? ->
+        //TODO
+        Toast.makeText(context, uri.toString(), Toast.LENGTH_LONG).show();
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -31,11 +42,21 @@ class CreatorChooseVideoFragment : Fragment() {
     }
 
     override fun onCreateView(
+
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_creator_choose_video, container, false)
+
+        val binding = FragmentCreatorChooseVideoBinding.inflate(inflater, container, false)
+
+        val selectVideoButton = binding.selectVideo;
+
+        selectVideoButton.setOnClickListener{
+            getContent.launch("video/mp4")
+        }
+
+        return binding.root;
     }
 
     companion object {
@@ -57,4 +78,7 @@ class CreatorChooseVideoFragment : Fragment() {
                 }
             }
     }
+
+
+
 }
