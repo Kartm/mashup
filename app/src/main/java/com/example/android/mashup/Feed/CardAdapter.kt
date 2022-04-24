@@ -8,7 +8,7 @@ import com.example.android.mashup.Video
 import com.example.android.mashup.databinding.CardViewBinding
 
 class CardAdapter(
-    private val videos: List<Video>,
+    private var videos: List<Video>,
     private val clickListener: MashupClickListener
 )
     : RecyclerView.Adapter<CardViewHolder>()
@@ -26,4 +26,9 @@ class CardAdapter(
     }
 
     override fun getItemCount(): Int = videos.size
+
+    fun setData(videos: List<Video>)
+    {
+        this.videos = videos;
+    }
 }

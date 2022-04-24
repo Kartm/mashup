@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class VideoUri (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val uri: Uri
+    val uri: String
 )

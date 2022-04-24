@@ -1,6 +1,8 @@
 package com.example.android.mashup.Feed
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -37,7 +39,7 @@ class FeedFragment : Fragment(), MashupClickListener {
             adapter = CardAdapter(videoList, firstFragment)
         }
 
-        populateVideos()
+        context?.let { populateVideos(it) }
 
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_FirstFragment_to_creatorFragment)
@@ -74,44 +76,44 @@ class FeedFragment : Fragment(), MashupClickListener {
         _binding = null
     }
 
-    private fun populateVideos() {
+    private fun populateVideos(context: Context) {
         val vid1 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid1",
             3,
             "asd"
         )
         videoList.add(vid1)
         val vid2 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid2",
             5,
             "lorem"
         )
         videoList.add(vid2)
         val vid3 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid3",
             3,
             "asd"
         )
         videoList.add(vid3)
         val vid4 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid4",
             5,
             "lorem"
         )
         videoList.add(vid4)
         val vid5 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid5",
             3,
             "asd"
         )
         videoList.add(vid5)
         val vid6 = Video(
-            R.drawable.blackhole,
+            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid6",
             5,
             "lorem"

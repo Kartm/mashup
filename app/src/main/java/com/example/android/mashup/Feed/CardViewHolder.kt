@@ -12,7 +12,7 @@ class CardViewHolder(
 {
     fun bindVideo(video: Video)
     {
-        cardCellBinding.thumbnail.setImageResource(video.thubnail)
+        cardCellBinding.thumbnail.setImageBitmap(video.thubnail)
         cardCellBinding.title.text = video.title
         cardCellBinding.duration.text = video.duration.toString()
 
