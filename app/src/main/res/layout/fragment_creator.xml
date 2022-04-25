@@ -10,59 +10,74 @@
     <!-- TODO: Update blank fragment layout -->
 
     <Button
-        android:id="@+id/selectVideoButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:text="@string/select_video"
-        app:layout_constraintEnd_toStartOf="@+id/selectAudioButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/selectAudioButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/select_audio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/selectVideoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/select_video"
+        app:layout_constraintEnd_toStartOf="@+id/selectAudioButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginBottom="31dp"
         android:text="test"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
     <VideoView
         android:id="@+id/videoView"
-        android:layout_width="389dp"
-        android:layout_height="357dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="187dp"
+        android:layout_width="wrap_content"
+        android:layout_height="257dp"
+        android:layout_marginTop="75dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectVideoButton"
         tools:ignore="MissingConstraints" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="47dp"
         android:background="@color/white"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintTop_toBottomOf="@+id/videoView"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="-6dp">
 
-        <org.florescu.android.rangeseekbar.RangeSeekBar
+        <!--        <org.florescu.android.rangeseekbar.RangeSeekBar-->
 
-            android:id="@+id/rangeSeekBar"
+        <!--            android:id="@+id/rangeSeekBar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:activeColor="@color/white"-->
+        <!--            app:alwaysActive="true"-->
+        <!--            app:barHeight="2dp"-->
+        <!--            app:showLabels="false"-->
+        <!--            app:textAboveThumbsColor="#000000"-->
+        <!--            />-->
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/slider_multiple_thumbs"
+            style="@style/Myslider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:activeColor="@color/white"
-            app:alwaysActive="true"
-            app:barHeight="2dp"
-            app:showLabels="false"
-            app:textAboveThumbsColor="#000000" />
+            android:layout_height="wrap_content" />
+
 
     </RelativeLayout>
 

@@ -19,6 +19,11 @@ import java.io.File
 import android.os.Environment
 import androidx.core.net.toUri
 
+import com.google.android.material.slider.RangeSlider
+
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -114,6 +119,9 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
         binding.videoView.setVideoURI(videoFile.toUri())
         binding.videoView.start()
+
+        val slider: RangeSlider = binding.sliderMultipleThumbs
+        slider.setValues(0.6f, 0.7f)
 
         return binding.root
     }
