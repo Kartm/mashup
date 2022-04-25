@@ -1,6 +1,7 @@
 package com.example.android.mashup.Creator
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,22 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
+import com.example.android.mashup.utils.AudioVideoMerger
+import com.example.android.mashup.utils.FFMpegCallback
+import java.io.File
+import androidx.core.net.toUri
+
+import android.os.Build
+import androidx.annotation.RequiresApi
+import org.florescu.android.rangeseekbar.RangeSeekBar
+import kotlin.math.max
+import kotlin.math.min
+import android.media.MediaMetadataRetriever
+
+
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,7 +36,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CreatorFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreatorFragment : Fragment() {
+class CreatorFragment : Fragment(), FFMpegCallback {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -30,6 +47,9 @@ class CreatorFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var startMs = 0
+    private var durationMs = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,6 +58,7 @@ class CreatorFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +76,68 @@ class CreatorFragment : Fragment() {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
+
+
+
+
+//        binding.videoView.setVideoURI(videoFile.toUri())
+//        binding.videoView.setZOrderOnTop(true);
+//        binding.videoView.start()
+
+        val videoStream = resources.openRawResource(R.raw.video)
+        val videoFile: File = createTempFile()
+
+        videoStream.use { input ->
+            videoFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        val audioStream = resources.openRawResource(R.raw.audio)
+        val audioFile: File = createTempFile()
+
+        audioStream.use { input ->
+            audioFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(context, audioFile.toUri())
+        val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        val millSecond = durationStr!!.toInt()
+
+        val folder = File(
+            requireContext().getExternalFilesDir(null),
+            "Mashup"
+        )
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+        val filename = File(folder, "video")
+
+        binding.seekBar3.setOnRangeSeekBarChangeListener(RangeSeekBar.OnRangeSeekBarChangeListener { _, minValue: Float, maxValue: Float ->
+            var start = 1 - minValue
+            var end = 1 - maxValue
+
+            this.startMs = (start * millSecond).toInt()
+            this.durationMs = ((end - start) * millSecond).toInt()
+
+            //        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
+            //        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
+
+            Log.v("me", "Audio has $millSecond ms. Start $startMs end $durationMs")
+
+            AudioVideoMerger.with(requireContext())
+                .setAudioFile(audioFile)
+                .setVideoFile(videoFile)
+                .setAudioStartMs(startMs)
+                .setAudioDurationMs(durationMs)
+                .setOutputPath(filename!!.absolutePath)
+                .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+                .setCallback(this)
+                .merge()
+        })
         return binding.root
     }
 
@@ -76,5 +159,33 @@ class CreatorFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onProgress(progress: String) {
+        Log.v("me", progress);
+    }
+
+    override fun onSuccess(convertedFile: File, type: String) {
+        Log.v("me", "success!");
+
+        binding.videoView.setVideoURI(convertedFile.toUri())
+        binding.videoView.seekTo(0)
+        binding.videoView.start()
+    }
+
+    override fun onFailure(error: Exception) {
+        Log.v("me", error.toString());
+        error.printStackTrace()
+
+    }
+
+    override fun onNotAvailable(error: Exception) {
+        Log.v("me", "not available");
+
+    }
+
+    override fun onFinish() {
+        Log.v("me", "finish");
+
     }
 }
