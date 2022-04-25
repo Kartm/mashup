@@ -1,6 +1,7 @@
 package com.example.android.mashup.data
 
 import android.net.Uri
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -8,5 +9,9 @@ import androidx.room.PrimaryKey
 data class VideoUri (
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val uri: String
+    val uri: String,
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
+    val thumbnail : ByteArray,
+    val name: String,
+    val length : Long,
 )

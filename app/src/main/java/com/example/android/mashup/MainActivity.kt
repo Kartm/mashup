@@ -1,7 +1,10 @@
 package com.example.android.mashup
 
+import android.Manifest
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.content.pm.PackageManager
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,12 +12,16 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.android.mashup.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val RECORD_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +34,39 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+        setupPermissions()
+
+    }
+
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            makeRequest()
+        }
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            RECORD_REQUEST_CODE)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                             permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            RECORD_REQUEST_CODE -> {
+
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                    Log.i("app","Permission has been denied by user")
+                } else {
+                    Log.i("app", "Permission has been granted by user")
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

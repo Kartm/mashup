@@ -3,6 +3,9 @@
     package="com.example.android.mashup">
 
     <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
 
     <application
         android:allowBackup="true"

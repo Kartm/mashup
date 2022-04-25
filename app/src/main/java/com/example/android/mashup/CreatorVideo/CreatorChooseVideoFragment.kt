@@ -1,23 +1,25 @@
 package com.example.android.mashup.CreatorVideo
 
-import android.R
+import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
-import android.os.Messenger
-import android.provider.MediaStore
+import android.provider.DocumentsContract
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.android.mashup.BuildConfig
 import com.example.android.mashup.Feed.CardAdapter
 import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.Video
@@ -25,6 +27,9 @@ import com.example.android.mashup.data.VideoUri
 import com.example.android.mashup.data.VideoUriViewModel
 import com.example.android.mashup.databinding.FragmentCreatorChooseVideoBinding
 import com.example.android.mashup.videoList
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.util.jar.Manifest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -49,13 +54,14 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         if (uri == null) {
             Toast.makeText(context, "No video chosen", Toast.LENGTH_SHORT).show();
         } else {
+            requireContext().grantUriPermission(BuildConfig.APPLICATION_ID,uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            requireActivity().contentResolver?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
 
-            getContext()?.getContentResolver()?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
+            openFile(uri);
             // if we specify 0, it should autogenerate index (I hope)
-            val videoUri = VideoUri(0, uri.toString());
-            videoUriViewModel.addVideoUri(videoUri);
-            Toast.makeText(context, "Added video", Toast.LENGTH_SHORT).show();
+//            val videoUri = VideoUri(0, uri.toString());
+//            videoUriViewModel.addVideoUri(videoUri);
+
         }
     }
 
@@ -81,7 +87,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         val selectVideoButton = binding.selectVideo;
 
         videoUriViewModel = ViewModelProvider(this).get(VideoUriViewModel::class.java)
-        val cardAdapter = CardAdapter(videoList, this@CreatorChooseVideoFragment);
+        val cardAdapter = CardAdapter(GetVideoDataForUris(videoUriViewModel.readAllData.value), this@CreatorChooseVideoFragment);
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 1)
@@ -94,15 +100,17 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         }
 
         videoUriViewModel.readAllData.observe(viewLifecycleOwner, Observer { videoUri ->
-            val videos = GetVideoDataForUris(videoUri)
-            cardAdapter.setData(videos)
+            val videos = GetVideoDataForUris(videoUri);
+            cardAdapter.setData(videos);
         })
 
 
         return binding.root;
     }
 
-    private fun GetVideoDataForUris(videoUri: List<VideoUri>?): List<Video> {
+    val videos : MutableLiveData<MutableList<Video>> by lazy { MutableLiveData<MutableList<Video>>() };
+
+    private fun GetVideoDataForUris(videoUri: List<VideoUri>?) : List<Video>{
         val videos: MutableList<Video> = mutableListOf();
         if (videoUri != null) {
             for (uri in videoUri) {
@@ -115,29 +123,9 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         return videos;
     }
 
-    private fun GetVideoDataFromUri(videoUri: VideoUri): Video? {
-        val thumb = ThumbnailUtils.createVideoThumbnail(
-            videoUri.uri,
-            MediaStore.Images.Thumbnails.MINI_KIND
-        );
-
-//        requestPermissionLauncher.launch(android.Manifest.permission.ACTION_OPEN_DOCUMENT)
-//        val file = File(Uri.parse(videoUri.uri));
-        val uri = Uri.parse(videoUri.uri)
-        val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
-        val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
-        val retriever =
-            MediaMetadataRetriever(); //use one of overloaded setDataSource() functions to set your data source
-        retriever.setDataSource(fileDescriptor);
-        val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-        val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
-        retriever.release()
-
-        if (thumbnail == null || title == null || time == null) return null;
-        val durationInSeconds = time.toLong() / 1000;
-
-        return Video(thumbnail, title, durationInSeconds, "none");
+    private fun GetVideoDataFromUri(videoUri: VideoUri) : Video{
+        val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(videoUri.thumbnail)
+        return Video(thumbnail, videoUri.name, videoUri.length, "no");
     }
 
     companion object {
@@ -195,6 +183,72 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 //
 //        }
 //    }
+
+
+    // Request code for selecting a PDF document.
+    val OPEN_THE_THING = 2
+
+    fun openFile(pickerInitialUri: Uri) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/video"
+
+            // Optionally, specify a URI for the file that should appear in the
+            // system file picker when it loads.
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+        startActivityForResult(intent, OPEN_THE_THING)
+    }
+
+    private lateinit var bigUri : Uri;
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val uri = data?.data;
+        if (uri != null) {
+            val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
+            val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
+            val retriever =
+                MediaMetadataRetriever(); //use one of overloaded setDataSource() functions to set your data source
+            retriever.setDataSource(fileDescriptor);
+            val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+            val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+            retriever.release()
+
+
+            if (thumbnail == null || title == null || time == null) return;
+            val convertedThumbnail = convertBitmapToByteArray(thumbnail) ?: return;
+            val durationInSeconds = time.toLong() / 1000;
+            val videoUri = VideoUri(0, uri.toString(), convertedThumbnail, title, durationInSeconds);
+            videoUriViewModel.addVideoUri(videoUri);
+            Toast.makeText(context, "Added video", Toast.LENGTH_SHORT).show();
+        };
+
+    }
+
+    fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
+        var baos: ByteArrayOutputStream? = null
+        return try {
+            baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+            baos.toByteArray()
+        } finally {
+            if (baos != null) {
+                try {
+                    baos.close()
+                } catch (e: IOException) {
+                    Log.i("app",
+                        "ByteArrayOutputStream was not closed"
+                    )
+                }
+            }
+        }
+    }
+
+    fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(src, 0, src.size)
+    }
 
 
 }
