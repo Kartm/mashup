@@ -1,9 +1,5 @@
 package com.example.android.mashup.Creator
 
-import android.app.ProgressDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,21 +9,21 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
-import android.widget.VideoView
 import com.example.android.mashup.utils.AudioVideoMerger
 import com.example.android.mashup.utils.FFMpegCallback
-import com.example.android.mashup.utils.Utils
 import java.io.File
-import android.os.Environment
 import androidx.core.net.toUri
 
-import com.google.android.material.slider.RangeSlider
-
-import androidx.appcompat.content.res.AppCompatResources
-
-import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
+import org.florescu.android.rangeseekbar.RangeSeekBar
+import kotlin.math.max
+import kotlin.math.min
+import android.media.MediaMetadataRetriever
+
+
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +46,9 @@ class CreatorFragment : Fragment(), FFMpegCallback {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private var startMs = 0
+    private var durationMs = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +76,13 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
-//        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
-//        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
+
+
+
+
+//        binding.videoView.setVideoURI(videoFile.toUri())
+//        binding.videoView.setZOrderOnTop(true);
+//        binding.videoView.start()
 
         val videoStream = resources.openRawResource(R.raw.video)
         val videoFile: File = createTempFile()
@@ -98,40 +102,42 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             }
         }
 
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(context, audioFile.toUri())
+        val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        val millSecond = durationStr!!.toInt()
 
-        binding.testButton.setOnClickListener {
-            val folder = File(
-                requireContext().getExternalFilesDir(null),
-                "Mashup"
-            )
-            if (!folder.exists()) {
-                folder.mkdirs()
-            }
-            val filename = File(folder, "video")
-
-                AudioVideoMerger.with(requireContext())
-                    .setAudioFile(audioFile)
-                    .setVideoFile(videoFile)
-                    .setOutputPath(filename!!.absolutePath)
-                    .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
-                    .setCallback(this)
-                    .merge()
-
-            // to find the file, go to SD Card -> /Android/data/com.example.android.mashup/files/Mashup/video/
+        val folder = File(
+            requireContext().getExternalFilesDir(null),
+            "Mashup"
+        )
+        if (!folder.exists()) {
+            folder.mkdirs()
         }
+        val filename = File(folder, "video")
 
+        binding.seekBar3.setOnRangeSeekBarChangeListener(RangeSeekBar.OnRangeSeekBarChangeListener { _, minValue: Float, maxValue: Float ->
+            var start = 1 - minValue
+            var end = 1 - maxValue
 
+            this.startMs = (start * millSecond).toInt()
+            this.durationMs = ((end - start) * millSecond).toInt()
 
+            //        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
+            //        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
 
-        binding.videoView.setVideoURI(videoFile.toUri())
-        binding.videoView.start()
+            Log.v("me", "Audio has $millSecond ms. Start $startMs end $durationMs")
 
-//        val slider = binding.rangeSeekBar
-//        val mockAudioVisualization = AppCompatResources.getDrawable(requireContext(), R.drawable.seekbar)
-//        slider.horizontalScrollbarTrackDrawable = mockAudioVisualization
-
-//        binding.seekBar3.val
-
+            AudioVideoMerger.with(requireContext())
+                .setAudioFile(audioFile)
+                .setVideoFile(videoFile)
+                .setAudioStartMs(startMs)
+                .setAudioDurationMs(durationMs)
+                .setOutputPath(filename!!.absolutePath)
+                .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+                .setCallback(this)
+                .merge()
+        })
         return binding.root
     }
 
@@ -163,6 +169,8 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         Log.v("me", "success!");
 
         binding.videoView.setVideoURI(convertedFile.toUri())
+        binding.videoView.seekTo(0)
+        binding.videoView.start()
     }
 
     override fun onFailure(error: Exception) {

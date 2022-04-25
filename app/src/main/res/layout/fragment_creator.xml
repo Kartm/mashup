@@ -9,6 +9,12 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <SurfaceView
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
+
     <Button
         android:id="@+id/selectAudioButton"
         android:layout_width="wrap_content"
@@ -30,46 +36,31 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="31dp"
-        android:text="test"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="wrap_content"
-        android:layout_height="257dp"
-        android:layout_marginTop="75dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectVideoButton"
-        tools:ignore="MissingConstraints" />
-
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="47dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/videoView"
-        tools:ignore="MissingConstraints">
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/selectVideoButton">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            tools:layout_editor_absoluteX="0dp" />
     </RelativeLayout>
 
-            <org.florescu.android.rangeseekbar.RangeSeekBar
-                android:id="@+id/seekBar3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="76dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/videoView"
-                />
+
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:id="@+id/seekBar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:absoluteMinValue="0.0"
+        app:absoluteMaxValue="1.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

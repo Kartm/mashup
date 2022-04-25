@@ -138,6 +138,8 @@ class AudioVideoMerger private constructor(private val context: Context) {
     private var callback: FFMpegCallback? = null
     private var outputPath = ""
     private var outputFileName = ""
+    private var audioStartMs: Int? = null
+    private var audioDurationMs: Int? = null
 
     fun setAudioFile(originalFiles: File): AudioVideoMerger {
         this.audio = originalFiles
@@ -161,6 +163,16 @@ class AudioVideoMerger private constructor(private val context: Context) {
 
     fun setOutputFileName(output: String): AudioVideoMerger {
         this.outputFileName = output
+        return this
+    }
+
+    fun setAudioStartMs(ms: Int): AudioVideoMerger {
+        this.audioStartMs = ms
+        return this
+    }
+
+    fun setAudioDurationMs(ms: Int): AudioVideoMerger {
+        this.audioDurationMs = ms
         return this
     }
 
@@ -188,7 +200,7 @@ class AudioVideoMerger private constructor(private val context: Context) {
         // todo -t 6 -i audio.mp3 takes just 6s of audio
         // you can use time format ffmpeg -i input.mp3 -ss 00:02:54.583 -acodec copy output.mp3
 
-        val query = arrayOf("-i", video!!.path, "-ss", "10", "-t", "15", "-i", audio!!.path, "-c:v", "copy", "-c:a", "aac", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
+        val query = arrayOf("-i", video!!.path, "-ss", audioStartMs.toString() + "ms", "-t", audioDurationMs.toString() + "ms", "-i", audio!!.path, "-c:v", "copy", "-c:a", "copy", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
 
         CallBackOfQuery().callQuery(query, object : FFmpegCallBack {
             override fun statisticsProcess(statistics: Statistics) {
@@ -215,40 +227,7 @@ class AudioVideoMerger private constructor(private val context: Context) {
                 }
                 callback!!.onFailure(IOException("Failed"))
             }
-
         })
-
-//        try {
-//            FFmpeg.getInstance(context).execute(cmd, object : ExecuteBinaryResponseHandler() {
-//                override fun onStart() {}
-//
-//                override fun onProgress(message: String?) {
-//                    callback!!.onProgress(message!!)
-//                }
-//
-//                override fun onSuccess(message: String?) {
-//                    Utils.refreshGallery(outputLocation.path, context)
-//                    callback!!.onSuccess(outputLocation, OutputType.TYPE_VIDEO)
-//
-//                }
-//
-//                override fun onFailure(message: String?) {
-//                    if (outputLocation.exists()) {
-//                        outputLocation.delete()
-//                    }
-//                    callback!!.onFailure(IOException(message))
-//                }
-//
-//                override fun onFinish() {
-//                    callback!!.onFinish()
-//                }
-//            })
-//        } catch (e: Exception) {
-//            callback!!.onFailure(e)
-//        } catch (e2: FFmpegCommandAlreadyRunningException) {
-//            callback!!.onNotAvailable(e2)
-//        }
-
     }
 
     companion object {
