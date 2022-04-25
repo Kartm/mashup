@@ -25,6 +25,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/icon_add_white"
-        android:backgroundTint="@color/primaryColor"
-        android:tint="@color/primaryTextColor"/>
+        style="@style/MyFloatingActionButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
