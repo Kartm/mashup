@@ -50,21 +50,6 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
     private lateinit var videoUriViewModel: VideoUriViewModel
 
-    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri == null) {
-            Toast.makeText(context, "No video chosen", Toast.LENGTH_SHORT).show();
-        } else {
-            requireContext().grantUriPermission(BuildConfig.APPLICATION_ID,uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            requireActivity().contentResolver?.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-            openFile(uri);
-            // if we specify 0, it should autogenerate index (I hope)
-//            val videoUri = VideoUri(0, uri.toString());
-//            videoUriViewModel.addVideoUri(videoUri);
-
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -96,19 +81,19 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
 
         selectVideoButton.setOnClickListener {
-            getContent.launch("video/mp4")
+//            getContent.launch("video/mp4")
+            openFile(Uri.parse(""));
         }
 
         videoUriViewModel.readAllData.observe(viewLifecycleOwner, Observer { videoUri ->
             val videos = GetVideoDataForUris(videoUri);
+            videos.forEach{Log.i("database", it.title)}
             cardAdapter.setData(videos);
         })
 
 
         return binding.root;
     }
-
-    val videos : MutableLiveData<MutableList<Video>> by lazy { MutableLiveData<MutableList<Video>>() };
 
     private fun GetVideoDataForUris(videoUri: List<VideoUri>?) : List<Video>{
         val videos: MutableList<Video> = mutableListOf();
@@ -152,38 +137,17 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         TODO("Not yet implemented")
     }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission())
-        { isGranted ->
-            {
-                if (isGranted) {
 
-                } else {
+    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri == null) {
+            Toast.makeText(context, "No video chosen", Toast.LENGTH_SHORT).show();
+        } else {
+            requireContext().grantUriPermission(BuildConfig.APPLICATION_ID,uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
-                }
-            }
+            openFile(uri);
+
         }
-
-//    private fun requestPermission() {
-//        when {
-//            ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permissions.ACTION_OPEN_DOCUMENT
-//            ) == PackageManager.PERMISSION_GRANTED -> {
-//                // granted
-//            }
-//            ActivityCompat.shouldShowRequestPermissionRationale(
-//                this, Manifest.permission.ACTION_OPEN_DOCUMENT
-//            ) -> {
-//                // additional rationale should be displayed
-//            }
-//            else -> {
-//                // Permission has not been asked yet
-//            }
-//
-//        }
-//    }
-
+    }
 
     // Request code for selecting a PDF document.
     val OPEN_THE_THING = 2
@@ -191,11 +155,11 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
     fun openFile(pickerInitialUri: Uri) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/video"
+            type = "video/mp4"
 
             // Optionally, specify a URI for the file that should appear in the
             // system file picker when it loads.
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+//            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
         }
         startActivityForResult(intent, OPEN_THE_THING)
     }
@@ -206,25 +170,40 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         val uri = data?.data;
         if (uri != null) {
+            Toast.makeText(context, uri.toString(), Toast.LENGTH_SHORT).show();
             val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
             val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
             val retriever =
                 MediaMetadataRetriever(); //use one of overloaded setDataSource() functions to set your data source
             retriever.setDataSource(fileDescriptor);
             val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-            val title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+            var title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+            if(title == null)
+            {
+                title = uri.toString().split("/").last();
+            }
             val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
             retriever.release()
 
 
-            if (thumbnail == null || title == null || time == null) return;
-            val convertedThumbnail = convertBitmapToByteArray(thumbnail) ?: return;
+            if (thumbnail == null || time == null) {
+                Toast.makeText(context, "something was null", Toast.LENGTH_SHORT).show();
+                return
+
+            };
+            val convertedThumbnail = convertBitmapToByteArray(thumbnail);
+            if(convertedThumbnail == null)
+            {
+                    Toast.makeText(context, "thumbnail was null", Toast.LENGTH_SHORT).show();
+                    return
+            }
             val durationInSeconds = time.toLong() / 1000;
             val videoUri = VideoUri(0, uri.toString(), convertedThumbnail, title, durationInSeconds);
             videoUriViewModel.addVideoUri(videoUri);
             Toast.makeText(context, "Added video", Toast.LENGTH_SHORT).show();
+            return;
         };
-
+        Toast.makeText(context, "No uri was gotten", Toast.LENGTH_SHORT).show();
     }
 
     fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {

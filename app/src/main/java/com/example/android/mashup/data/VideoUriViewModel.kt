@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class VideoUriViewModel(application: Application) : AndroidViewModel(application) {
 
-    val readAllData: LiveData<List<VideoUri>>;
+    var readAllData: LiveData<List<VideoUri>>;
     private val repository: VideoUriRepository;
 
     init{
