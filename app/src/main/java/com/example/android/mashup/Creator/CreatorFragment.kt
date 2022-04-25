@@ -1,6 +1,8 @@
 package com.example.android.mashup.Creator
 
 import android.app.ProgressDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,8 +23,11 @@ import androidx.core.net.toUri
 
 import com.google.android.material.slider.RangeSlider
 
+import androidx.appcompat.content.res.AppCompatResources
 
-
+import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,6 +59,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -120,8 +126,11 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         binding.videoView.setVideoURI(videoFile.toUri())
         binding.videoView.start()
 
-        val slider: RangeSlider = binding.sliderMultipleThumbs
-        slider.setValues(0.6f, 0.7f)
+//        val slider = binding.rangeSeekBar
+//        val mockAudioVisualization = AppCompatResources.getDrawable(requireContext(), R.drawable.seekbar)
+//        slider.horizontalScrollbarTrackDrawable = mockAudioVisualization
+
+//        binding.seekBar3.val
 
         return binding.root
     }

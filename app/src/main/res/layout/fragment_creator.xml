@@ -56,30 +56,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="47dp"
         android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/videoView"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-6dp">
-
-        <!--        <org.florescu.android.rangeseekbar.RangeSeekBar-->
-
-        <!--            android:id="@+id/rangeSeekBar"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:activeColor="@color/white"-->
-        <!--            app:alwaysActive="true"-->
-        <!--            app:barHeight="2dp"-->
-        <!--            app:showLabels="false"-->
-        <!--            app:textAboveThumbsColor="#000000"-->
-        <!--            />-->
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/slider_multiple_thumbs"
-            style="@style/Myslider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-
+        tools:ignore="MissingConstraints">
     </RelativeLayout>
 
-
+            <org.florescu.android.rangeseekbar.RangeSeekBar
+                android:id="@+id/seekBar3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="76dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/videoView"
+                />
 </androidx.constraintlayout.widget.ConstraintLayout>
