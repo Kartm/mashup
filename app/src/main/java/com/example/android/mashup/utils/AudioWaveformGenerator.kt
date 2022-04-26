@@ -10,7 +10,6 @@ import java.io.File
 import java.io.IOException
 
 class AudioWaveformGenerator private constructor(private val context: Context) {
-
     private var audio: File? = null
     private var callback: FFMpegCallback? = null
     private var outputPath = ""
@@ -64,7 +63,7 @@ class AudioWaveformGenerator private constructor(private val context: Context) {
             override fun success() {
                 Log.v("me", "waveform ready: $outputLocation")
 //                Utils.refreshGallery(outputLocation.path, context)
-//                callback!!.onSuccess(outputLocation, OutputType.TYPE_VIDEO)
+                callback!!.onSuccess(outputLocation, OutputType.WAVEFORM)
             }
 
             override fun cancel() {
@@ -81,9 +80,6 @@ class AudioWaveformGenerator private constructor(private val context: Context) {
     }
 
     companion object {
-
-        val TAG = "AudioWaveformGenerator"
-
         fun with(context: Context): AudioWaveformGenerator {
             return AudioWaveformGenerator(context)
         }

@@ -21,6 +21,7 @@ import kotlin.math.max
 import kotlin.math.min
 import android.media.MediaMetadataRetriever
 import com.example.android.mashup.utils.AudioWaveformGenerator
+import com.example.android.mashup.utils.OutputType
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -153,12 +154,21 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         Log.v("me", progress);
     }
 
-    override fun onSuccess(convertedFile: File, type: String) {
+    override fun onSuccess(convertedFile: File, type: OutputType) {
         Log.v("me", "success!");
 
-        binding.videoView.setVideoURI(convertedFile.toUri())
-        binding.videoView.seekTo(0)
-        binding.videoView.start()
+        when(type) {
+            OutputType.VIDEO -> {
+                binding.videoView.setVideoURI(convertedFile.toUri())
+                binding.videoView.seekTo(0)
+                binding.videoView.start()
+            }
+            OutputType.WAVEFORM -> {
+                binding.imageView.setImageURI(convertedFile.toUri())
+            }
+        }
+
+
     }
 
     override fun onFailure(error: Exception) {
