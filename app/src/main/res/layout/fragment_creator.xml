@@ -68,47 +68,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
 
-<!--        <org.florescu.android.rangeseekbar.RangeSeekBar-->
-<!--            android:id="@+id/seekBar3"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_gravity="bottom|center"-->
-<!--            android:paddingLeft="0dp"-->
-<!--            android:paddingRight="0dp"-->
-<!--            app:showLabels="false"-->
-<!--            app:valuesAboveThumbs="false"-->
-<!--            app:absoluteMaxValue="1.0"-->
-<!--            app:absoluteMinValue="0.0" />-->
-
         <com.google.android.material.slider.RangeSlider
             android:id="@+id/rangeBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom|center"
-        android:valueFrom="0.0"
-        android:valueTo="1.0"
-        app:values="@array/initial_slider_values"  />
-
+            android:valueFrom="0.0"
+            android:valueTo="1.0"
+            app:labelBehavior="gone"
+            app:values="@array/initial_slider_values" />
     </FrameLayout>
-
-
-    <!--    <com.masoudss.lib.WaveformSeekBar-->
-<!--        android:id="@+id/waveform"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/seekBar3"-->
-<!--        app:wave_background_color="@color/black"-->
-<!--        app:wave_corner_radius="2dp"-->
-<!--        app:wave_gap="2dp"-->
-<!--        app:wave_gravity="center"-->
-<!--        app:wave_max_progress="100"-->
-<!--        app:wave_min_height="5dp"-->
-<!--        app:wave_padding_Bottom="2dp"-->
-<!--        app:wave_padding_left="2dp"-->
-<!--        app:wave_padding_right="2dp"-->
-<!--        app:wave_padding_top="2dp"-->
-<!--        app:wave_progress="33"-->
-<!--        app:wave_progress_color="@color/primaryColor"-->
-<!--        app:wave_width="5dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

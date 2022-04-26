@@ -96,7 +96,28 @@ class AudioVideoMerger private constructor(private val context: Context) {
         // todo -t 6 -i audio.mp3 takes just 6s of audio
         // you can use time format ffmpeg -i input.mp3 -ss 00:02:54.583 -acodec copy output.mp3
 
-        val query = arrayOf("-i", video!!.path, "-ss", audioStartMs.toString() + "ms", "-t", audioDurationMs.toString() + "ms", "-i", audio!!.path, "-c:v", "copy", "-c:a", "copy", "-strict", "experimental", "-map", "0:v:0", "-map", "1:a:0", "-shortest", outputLocation.path)
+        val query = arrayOf(
+            "-i",
+            video!!.path,
+            "-ss",
+            audioStartMs.toString() + "ms",
+            "-t",
+            audioDurationMs.toString() + "ms",
+            "-i",
+            audio!!.path,
+            "-c:v",
+            "copy",
+            "-c:a",
+            "copy",
+            "-strict",
+            "experimental",
+            "-map",
+            "0:v:0",
+            "-map",
+            "1:a:0",
+            "-shortest",
+            outputLocation.path
+        )
 
         CallBackOfQuery().callQuery(query, object : FFmpegCallBack {
             override fun statisticsProcess(statistics: Statistics) {

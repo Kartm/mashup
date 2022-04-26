@@ -109,7 +109,14 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                 var audioStart = slider.values[0]
                 var audioEnd = slider.values[1]
 
-                mergeAudioVideo(audioStart, audioEnd, audioDurationMs, audioFile, videoFile, filename)
+                mergeAudioVideo(
+                    audioStart,
+                    audioEnd,
+                    audioDurationMs,
+                    audioFile,
+                    videoFile,
+                    filename
+                )
             }
         })
         return binding.root
@@ -124,12 +131,19 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             .merge()
     }
 
-    private fun mergeAudioVideo(audioStart: Float, audioEnd: Float, audioDurationMs: Int, audioFile: File, videoFile: File, filename: File) {
+    private fun mergeAudioVideo(
+        audioStart: Float,
+        audioEnd: Float,
+        audioDurationMs: Int,
+        audioFile: File,
+        videoFile: File,
+        filename: File
+    ) {
         AudioVideoMerger.with(requireContext())
             .setAudioFile(audioFile)
             .setVideoFile(videoFile)
             .setAudioStartMs((audioStart * audioDurationMs).toInt())
-            .setAudioDurationMs(((audioEnd-audioStart) * audioDurationMs).toInt())
+            .setAudioDurationMs(((audioEnd - audioStart) * audioDurationMs).toInt())
             .setOutputPath(filename!!.absolutePath)
             .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
             .setCallback(this)
@@ -163,7 +177,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
     override fun onSuccess(convertedFile: File, type: OutputType) {
         Log.v("me", "success!");
 
-        when(type) {
+        when (type) {
             OutputType.VIDEO -> {
                 binding.videoView.setVideoURI(convertedFile.toUri())
                 binding.videoView.seekTo(0)
