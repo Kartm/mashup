@@ -20,10 +20,7 @@ import org.florescu.android.rangeseekbar.RangeSeekBar
 import kotlin.math.max
 import kotlin.math.min
 import android.media.MediaMetadataRetriever
-
-
-
-
+import com.example.android.mashup.utils.AudioWaveformGenerator
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -63,9 +60,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        // Inflate the layout for this fragment
         _binding = FragmentCreatorBinding.inflate(inflater, container, false);
 
         binding.selectVideoButton.setOnClickListener { view ->
@@ -75,14 +69,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         binding.selectAudioButton.setOnClickListener { view ->
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
-
-
-
-
-
-//        binding.videoView.setVideoURI(videoFile.toUri())
-//        binding.videoView.setZOrderOnTop(true);
-//        binding.videoView.start()
 
         val videoStream = resources.openRawResource(R.raw.video)
         val videoFile: File = createTempFile()
@@ -116,17 +102,19 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         }
         val filename = File(folder, "video")
 
+        AudioWaveformGenerator.with(requireContext())
+            .setAudioFile(audioFile)
+            .setOutputPath(filename!!.absolutePath)
+            .setOutputFileName("waveform" + System.currentTimeMillis() + ".png")
+            .setCallback(this)
+            .merge()
+
         binding.seekBar3.setOnRangeSeekBarChangeListener(RangeSeekBar.OnRangeSeekBarChangeListener { _, minValue: Float, maxValue: Float ->
             var start = 1 - minValue
             var end = 1 - maxValue
 
             this.startMs = (start * millSecond).toInt()
             this.durationMs = ((end - start) * millSecond).toInt()
-
-            //        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
-            //        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
-
-            Log.v("me", "Audio has $millSecond ms. Start $startMs end $durationMs")
 
             AudioVideoMerger.with(requireContext())
                 .setAudioFile(audioFile)

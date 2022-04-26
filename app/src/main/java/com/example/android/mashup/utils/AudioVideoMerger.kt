@@ -1,18 +1,17 @@
 package com.example.android.mashup.utils
 
 import android.content.Context
-import com.simform.videooperations.CallBackOfQuery
-import com.simform.videooperations.FFmpegCallBack
-
-import java.io.File
-import java.io.IOException
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import com.simform.videooperations.CallBackOfQuery
+import com.simform.videooperations.FFmpegCallBack
 import com.simform.videooperations.LogMessage
 import com.simform.videooperations.Statistics
+import java.io.File
 import java.io.FileNotFoundException
+import java.io.IOException
 import java.io.InputStream
 
 interface FFMpegCallback {
@@ -239,3 +238,4 @@ class AudioVideoMerger private constructor(private val context: Context) {
         }
     }
 }
+
