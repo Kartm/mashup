@@ -16,12 +16,10 @@ import androidx.core.net.toUri
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import org.florescu.android.rangeseekbar.RangeSeekBar
-import kotlin.math.max
-import kotlin.math.min
 import android.media.MediaMetadataRetriever
 import com.example.android.mashup.utils.AudioWaveformGenerator
 import com.example.android.mashup.utils.OutputType
+import com.google.android.material.slider.RangeSlider
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -44,9 +42,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private var startMs = 0
-    private var durationMs = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +87,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         val mmr = MediaMetadataRetriever()
         mmr.setDataSource(context, audioFile.toUri())
         val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val millSecond = durationStr!!.toInt()
+        val audioDurationMs = durationStr!!.toInt()
 
         val folder = File(
             requireContext().getExternalFilesDir(null),
@@ -103,31 +98,42 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         }
         val filename = File(folder, "video")
 
+        generateWaveform(audioFile, filename)
+        mergeAudioVideo(0.0f, 1.0f, audioDurationMs, audioFile, videoFile, filename)
+
+        binding.rangeBar.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: RangeSlider) {
+            }
+
+            override fun onStopTrackingTouch(slider: RangeSlider) {
+                var audioStart = slider.values[0]
+                var audioEnd = slider.values[1]
+
+                mergeAudioVideo(audioStart, audioEnd, audioDurationMs, audioFile, videoFile, filename)
+            }
+        })
+        return binding.root
+    }
+
+    private fun generateWaveform(audioFile: File, filename: File) {
         AudioWaveformGenerator.with(requireContext())
             .setAudioFile(audioFile)
             .setOutputPath(filename!!.absolutePath)
-            .setOutputFileName("waveform" + System.currentTimeMillis() + ".png")
+            .setOutputFileName("waveform_" + System.currentTimeMillis() + ".png")
             .setCallback(this)
             .merge()
+    }
 
-        binding.seekBar3.setOnRangeSeekBarChangeListener(RangeSeekBar.OnRangeSeekBarChangeListener { _, minValue: Float, maxValue: Float ->
-            var start = 1 - minValue
-            var end = 1 - maxValue
-
-            this.startMs = (start * millSecond).toInt()
-            this.durationMs = ((end - start) * millSecond).toInt()
-
-            AudioVideoMerger.with(requireContext())
-                .setAudioFile(audioFile)
-                .setVideoFile(videoFile)
-                .setAudioStartMs(startMs)
-                .setAudioDurationMs(durationMs)
-                .setOutputPath(filename!!.absolutePath)
-                .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
-                .setCallback(this)
-                .merge()
-        })
-        return binding.root
+    private fun mergeAudioVideo(audioStart: Float, audioEnd: Float, audioDurationMs: Int, audioFile: File, videoFile: File, filename: File) {
+        AudioVideoMerger.with(requireContext())
+            .setAudioFile(audioFile)
+            .setVideoFile(videoFile)
+            .setAudioStartMs((audioStart * audioDurationMs).toInt())
+            .setAudioDurationMs(((audioEnd-audioStart) * audioDurationMs).toInt())
+            .setOutputPath(filename!!.absolutePath)
+            .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+            .setCallback(this)
+            .merge()
     }
 
     companion object {

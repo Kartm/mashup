@@ -51,28 +51,46 @@
             tools:layout_editor_absoluteX="0dp" />
     </RelativeLayout>
 
-
-    <org.florescu.android.rangeseekbar.RangeSeekBar
-        android:id="@+id/seekBar3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:absoluteMinValue="0.0"
-        app:absoluteMaxValue="1.0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
-
-    <ImageView
-        android:id="@+id/imageView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/ic_launcher_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar3"
-        android:scaleType="fitXY"/>
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
+
+<!--        <org.florescu.android.rangeseekbar.RangeSeekBar-->
+<!--            android:id="@+id/seekBar3"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="bottom|center"-->
+<!--            android:paddingLeft="0dp"-->
+<!--            android:paddingRight="0dp"-->
+<!--            app:showLabels="false"-->
+<!--            app:valuesAboveThumbs="false"-->
+<!--            app:absoluteMaxValue="1.0"-->
+<!--            app:absoluteMinValue="0.0" />-->
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/rangeBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center"
+        android:valueFrom="0.0"
+        android:valueTo="1.0"
+        app:values="@array/initial_slider_values"  />
+
+    </FrameLayout>
+
 
     <!--    <com.masoudss.lib.WaveformSeekBar-->
 <!--        android:id="@+id/waveform"-->
