@@ -98,8 +98,9 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         }
         val filename = File(folder, "video")
 
+        // todo make it run simultaneously
         generateWaveform(audioFile, filename)
-        mergeAudioVideo(0.0f, 1.0f, audioDurationMs, audioFile, videoFile, filename)
+//        mergeAudioVideo(0.0f, 1.0f, audioDurationMs, audioFile, videoFile, filename)
 
         binding.rangeBar.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: RangeSlider) {
@@ -184,6 +185,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                 binding.videoView.start()
             }
             OutputType.WAVEFORM -> {
+                binding.imageView.setImageURI(null) // because sometimes the change is not registered
                 binding.imageView.setImageURI(convertedFile.toUri())
             }
         }
