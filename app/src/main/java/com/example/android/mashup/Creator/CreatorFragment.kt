@@ -16,14 +16,10 @@ import androidx.core.net.toUri
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import org.florescu.android.rangeseekbar.RangeSeekBar
-import kotlin.math.max
-import kotlin.math.min
 import android.media.MediaMetadataRetriever
-
-
-
-
+import com.example.android.mashup.utils.AudioWaveformGenerator
+import com.example.android.mashup.utils.OutputType
+import com.google.android.material.slider.RangeSlider
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,9 +43,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private var startMs = 0
-    private var durationMs = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -63,9 +56,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-        // Inflate the layout for this fragment
         _binding = FragmentCreatorBinding.inflate(inflater, container, false);
 
         binding.selectVideoButton.setOnClickListener { view ->
@@ -75,14 +65,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         binding.selectAudioButton.setOnClickListener { view ->
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
-
-
-
-
-
-//        binding.videoView.setVideoURI(videoFile.toUri())
-//        binding.videoView.setZOrderOnTop(true);
-//        binding.videoView.start()
 
         val videoStream = resources.openRawResource(R.raw.video)
         val videoFile: File = createTempFile()
@@ -105,7 +87,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         val mmr = MediaMetadataRetriever()
         mmr.setDataSource(context, audioFile.toUri())
         val durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val millSecond = durationStr!!.toInt()
+        val audioDurationMs = durationStr!!.toInt()
 
         val folder = File(
             requireContext().getExternalFilesDir(null),
@@ -116,29 +98,57 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         }
         val filename = File(folder, "video")
 
-        binding.seekBar3.setOnRangeSeekBarChangeListener(RangeSeekBar.OnRangeSeekBarChangeListener { _, minValue: Float, maxValue: Float ->
-            var start = 1 - minValue
-            var end = 1 - maxValue
+        // todo make it run simultaneously
+        generateWaveform(audioFile, filename)
+//        mergeAudioVideo(0.0f, 1.0f, audioDurationMs, audioFile, videoFile, filename)
 
-            this.startMs = (start * millSecond).toInt()
-            this.durationMs = ((end - start) * millSecond).toInt()
+        binding.rangeBar.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: RangeSlider) {
+            }
 
-            //        val videoUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.video)
-            //        val audioUri = Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.audio)
+            override fun onStopTrackingTouch(slider: RangeSlider) {
+                var audioStart = slider.values[0]
+                var audioEnd = slider.values[1]
 
-            Log.v("me", "Audio has $millSecond ms. Start $startMs end $durationMs")
-
-            AudioVideoMerger.with(requireContext())
-                .setAudioFile(audioFile)
-                .setVideoFile(videoFile)
-                .setAudioStartMs(startMs)
-                .setAudioDurationMs(durationMs)
-                .setOutputPath(filename!!.absolutePath)
-                .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
-                .setCallback(this)
-                .merge()
+                mergeAudioVideo(
+                    audioStart,
+                    audioEnd,
+                    audioDurationMs,
+                    audioFile,
+                    videoFile,
+                    filename
+                )
+            }
         })
         return binding.root
+    }
+
+    private fun generateWaveform(audioFile: File, filename: File) {
+        AudioWaveformGenerator.with(requireContext())
+            .setAudioFile(audioFile)
+            .setOutputPath(filename!!.absolutePath)
+            .setOutputFileName("waveform_" + System.currentTimeMillis() + ".png")
+            .setCallback(this)
+            .merge()
+    }
+
+    private fun mergeAudioVideo(
+        audioStart: Float,
+        audioEnd: Float,
+        audioDurationMs: Int,
+        audioFile: File,
+        videoFile: File,
+        filename: File
+    ) {
+        AudioVideoMerger.with(requireContext())
+            .setAudioFile(audioFile)
+            .setVideoFile(videoFile)
+            .setAudioStartMs((audioStart * audioDurationMs).toInt())
+            .setAudioDurationMs(((audioEnd - audioStart) * audioDurationMs).toInt())
+            .setOutputPath(filename!!.absolutePath)
+            .setOutputFileName("merged_" + System.currentTimeMillis() + ".mp4")
+            .setCallback(this)
+            .merge()
     }
 
     companion object {
@@ -165,12 +175,22 @@ class CreatorFragment : Fragment(), FFMpegCallback {
         Log.v("me", progress);
     }
 
-    override fun onSuccess(convertedFile: File, type: String) {
+    override fun onSuccess(convertedFile: File, type: OutputType) {
         Log.v("me", "success!");
 
-        binding.videoView.setVideoURI(convertedFile.toUri())
-        binding.videoView.seekTo(0)
-        binding.videoView.start()
+        when (type) {
+            OutputType.VIDEO -> {
+                binding.videoView.setVideoURI(convertedFile.toUri())
+                binding.videoView.seekTo(0)
+                binding.videoView.start()
+            }
+            OutputType.WAVEFORM -> {
+                binding.imageView.setImageURI(null) // because sometimes the change is not registered
+                binding.imageView.setImageURI(convertedFile.toUri())
+            }
+        }
+
+
     }
 
     override fun onFailure(error: Exception) {
