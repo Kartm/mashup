@@ -12,4 +12,7 @@ interface VideoUriDao {
 
     @Query("SELECT * FROM video_uri_table ORDER BY id ASC")
     fun readAllData() : LiveData<List<VideoUri>>
+
+    @Query("DELETE FROM video_uri_table")
+    fun nukeTable()
 }

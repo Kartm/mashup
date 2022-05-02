@@ -30,5 +30,6 @@ class CardAdapter(
     fun setData(videos: List<Video>)
     {
         this.videos = videos;
+        notifyDataSetChanged();
     }
 }

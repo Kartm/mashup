@@ -72,7 +72,11 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         val selectVideoButton = binding.selectVideo;
 
         videoUriViewModel = ViewModelProvider(this).get(VideoUriViewModel::class.java)
-        val cardAdapter = CardAdapter(GetVideoDataForUris(videoUriViewModel.readAllData.value), this@CreatorChooseVideoFragment);
+        videoUriViewModel.nukeTable();
+        val cardAdapter = CardAdapter(
+            GetVideoDataForUris(videoUriViewModel.readAllData.value),
+            this@CreatorChooseVideoFragment
+        );
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 1)
@@ -87,7 +91,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
         videoUriViewModel.readAllData.observe(viewLifecycleOwner, Observer { videoUri ->
             val videos = GetVideoDataForUris(videoUri);
-            videos.forEach{Log.i("database", it.title)}
+            videos.forEach { Log.i("database", it.title) }
             cardAdapter.setData(videos);
         })
 
@@ -95,20 +99,18 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         return binding.root;
     }
 
-    private fun GetVideoDataForUris(videoUri: List<VideoUri>?) : List<Video>{
+    private fun GetVideoDataForUris(videoUri: List<VideoUri>?): List<Video> {
         val videos: MutableList<Video> = mutableListOf();
         if (videoUri != null) {
             for (uri in videoUri) {
                 val video = GetVideoDataFromUri(uri)
-                if (video != null) {
-                    videos.add(video)
-                }
+                videos.add(video)
             }
         }
         return videos;
     }
 
-    private fun GetVideoDataFromUri(videoUri: VideoUri) : Video{
+    private fun GetVideoDataFromUri(videoUri: VideoUri): Video {
         val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(videoUri.thumbnail)
         return Video(thumbnail, videoUri.name, videoUri.length, "no");
     }
@@ -142,7 +144,11 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         if (uri == null) {
             Toast.makeText(context, "No video chosen", Toast.LENGTH_SHORT).show();
         } else {
-            requireContext().grantUriPermission(BuildConfig.APPLICATION_ID,uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            requireContext().grantUriPermission(
+                BuildConfig.APPLICATION_ID,
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            );
 
             openFile(uri);
 
@@ -164,7 +170,8 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         startActivityForResult(intent, OPEN_THE_THING)
     }
 
-    private lateinit var bigUri : Uri;
+    private lateinit var bigUri: Uri;
+
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -178,8 +185,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
             retriever.setDataSource(fileDescriptor);
             val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
             var title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-            if(title == null)
-            {
+            if (title == null) {
                 title = uri.toString().split("/").last();
             }
             val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
@@ -192,13 +198,13 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
             };
             val convertedThumbnail = convertBitmapToByteArray(thumbnail);
-            if(convertedThumbnail == null)
-            {
-                    Toast.makeText(context, "thumbnail was null", Toast.LENGTH_SHORT).show();
-                    return
+            if (convertedThumbnail == null) {
+                Toast.makeText(context, "thumbnail was null", Toast.LENGTH_SHORT).show();
+                return
             }
             val durationInSeconds = time.toLong() / 1000;
-            val videoUri = VideoUri(0, uri.toString(), convertedThumbnail, title, durationInSeconds);
+            val videoUri =
+                VideoUri(0, uri.toString(), convertedThumbnail, title, durationInSeconds);
             videoUriViewModel.addVideoUri(videoUri);
             Toast.makeText(context, "Added video", Toast.LENGTH_SHORT).show();
             return;
@@ -217,7 +223,8 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
                 try {
                     baos.close()
                 } catch (e: IOException) {
-                    Log.i("app",
+                    Log.i(
+                        "app",
                         "ByteArrayOutputStream was not closed"
                     )
                 }

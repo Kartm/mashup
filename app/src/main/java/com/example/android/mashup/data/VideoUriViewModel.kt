@@ -21,7 +21,14 @@ class VideoUriViewModel(application: Application) : AndroidViewModel(application
     fun addVideoUri(videoUri: VideoUri)
     {
         viewModelScope.launch(Dispatchers.IO){
-            repository.addVideUri(videoUri);
+            repository.addVideoUri(videoUri);
+        }
+    }
+
+    fun nukeTable()
+    {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.nukeTable();
         }
     }
 }

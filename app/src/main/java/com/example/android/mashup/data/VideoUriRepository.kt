@@ -6,5 +6,7 @@ class VideoUriRepository(private val videoUriDao : VideoUriDao) {
 
     val readAllData : LiveData<List<VideoUri>> = videoUriDao.readAllData();
 
-    suspend fun addVideUri(videoUri: VideoUri) = videoUriDao.addVideoUri(videoUri);
+    suspend fun addVideoUri(videoUri: VideoUri) = videoUriDao.addVideoUri(videoUri);
+
+    suspend fun nukeTable() = videoUriDao.nukeTable();
 }
