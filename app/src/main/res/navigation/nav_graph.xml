@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/creatorFragment"
         android:name="com.example.android.mashup.Creator.CreatorFragment"
-        android:label="fragment_creator"
+        android:label="@string/fragment_creator_label"
         tools:layout="@layout/fragment_creator" >
         <action
             android:id="@+id/action_creatorFragment_to_creatorChooseVideoFragment"
@@ -54,11 +54,11 @@
     <fragment
         android:id="@+id/creatorChooseVideoFragment"
         android:name="com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragment"
-        android:label="fragment_creator_choose_video"
+        android:label="@string/fragment_creator_choose_video_label"
         tools:layout="@layout/fragment_creator_choose_video" />
     <fragment
         android:id="@+id/creatorChooseAudioFragment"
         android:name="com.example.android.mashup.CreatorAudio.CreatorChooseAudioFragment"
-        android:label="fragment_creator_choose_audio"
+        android:label="@string/fragment_creator_choose_audio_label"
         tools:layout="@layout/fragment_creator_choose_audio" />
 </navigation>

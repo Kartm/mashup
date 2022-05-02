@@ -2,8 +2,8 @@
     <string name="app_name">Mashup</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="first_fragment_label">Your Mashups</string>
+    <string name="second_fragment_label">Details</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -16,8 +16,11 @@
     <string name="select_video">Select video</string>
     <string name="select_audio">Select audio</string>
     <string name="thumbnail">Thumbnail representing the mashup</string>
-    <string name="title_place_holder">Paceholder title</string>
+    <string name="title_place_holder">Placeholder title</string>
     <string name="author_placeholder">Placeholder duration</string>
     <string name="description_placeholder">Description placeholder</string>
     <string name="duration_placeholder">Duration Placeholder</string>
+    <string name="fragment_creator_label">Mashup Creator</string>
+    <string name="fragment_creator_choose_video_label">Select Video</string>
+    <string name="fragment_creator_choose_audio_label">Select Audio</string>
 </resources>
