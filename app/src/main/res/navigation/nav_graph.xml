@@ -42,7 +42,7 @@
     <fragment
         android:id="@+id/creatorFragment"
         android:name="com.example.android.mashup.Creator.CreatorFragment"
-        android:label="fragment_creator"
+        android:label="@string/fragment_creator_label"
         tools:layout="@layout/fragment_creator" >
         <action
             android:id="@+id/action_creatorFragment_to_creatorChooseVideoFragment"
@@ -50,15 +50,39 @@
         <action
             android:id="@+id/action_creatorFragment_to_creatorChooseAudioFragment"
             app:destination="@id/creatorChooseAudioFragment" />
+        <action
+            android:id="@+id/action_creatorFragment_to_cancelDialogFragment2"
+            app:destination="@id/cancelDialogFragment" />
+        <action
+            android:id="@+id/action_creatorFragment_to_saveDialogFragment"
+            app:destination="@id/saveDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/creatorChooseVideoFragment"
         android:name="com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragment"
-        android:label="fragment_creator_choose_video"
+        android:label="@string/fragment_creator_choose_video_label"
         tools:layout="@layout/fragment_creator_choose_video" />
     <fragment
         android:id="@+id/creatorChooseAudioFragment"
         android:name="com.example.android.mashup.CreatorAudio.CreatorChooseAudioFragment"
-        android:label="fragment_creator_choose_audio"
+        android:label="@string/fragment_creator_choose_audio_label"
         tools:layout="@layout/fragment_creator_choose_audio" />
+    <dialog
+        android:id="@+id/cancelDialogFragment"
+        android:name="com.example.android.mashup.Creator.CancelDialogFragment"
+        android:label="fragment_cancel_dialog"
+        tools:layout="@layout/fragment_cancel_dialog" >
+        <action
+            android:id="@+id/action_cancelDialogFragment_to_FirstFragment2"
+            app:destination="@id/FirstFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/saveDialogFragment"
+        android:name="com.example.android.mashup.Creator.SaveDialogFragment"
+        android:label="fragment_save_dialog"
+        tools:layout="@layout/fragment_save_dialog" >
+        <action
+            android:id="@+id/action_saveDialogFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </dialog>
 </navigation>
