@@ -28,4 +28,8 @@
     <string name="your_progress_will_be_irreversibly_lost">Your progress will be irreversibly lost.</string>
     <string name="cancel">Cancel</string>
     <string name="discard">Discard</string>
+    <string name="save_dialog_input_description">Description</string>
+    <string name="save_dialog_input_title">Title</string>
+    <string name="save_dialog_title">Save your mashup</string>
+    <string name="save">Save</string>
 </resources>
