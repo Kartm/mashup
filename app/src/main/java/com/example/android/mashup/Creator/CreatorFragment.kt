@@ -1,36 +1,26 @@
 package com.example.android.mashup.Creator
 
+import android.media.MediaMetadataRetriever
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
+import androidx.annotation.RequiresApi
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
 import com.example.android.mashup.utils.AudioVideoMerger
-import com.example.android.mashup.utils.FFMpegCallback
-import java.io.File
-import androidx.core.net.toUri
-
-import android.os.Build
-import androidx.annotation.RequiresApi
-import android.media.MediaMetadataRetriever
-import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
 import com.example.android.mashup.utils.AudioWaveformGenerator
+import com.example.android.mashup.utils.FFMpegCallback
 import com.example.android.mashup.utils.OutputType
 import com.google.android.material.slider.RangeSlider
-import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
-
-import com.example.android.mashup.MainActivity
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-
-
-
+import java.io.File
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -60,6 +50,22 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+//            findNavController().navigate(R.id.action_creatorFragment_to_cancelDialogFragment2)
+//        }
+//
+//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_creatorFragment_to_cancelDialogFragment2)
+            }
+
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
