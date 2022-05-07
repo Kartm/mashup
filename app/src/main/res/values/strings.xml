@@ -23,4 +23,9 @@
     <string name="fragment_creator_label">Mashup Creator</string>
     <string name="fragment_creator_choose_video_label">Select Video</string>
     <string name="fragment_creator_choose_audio_label">Select Audio</string>
+    <string name="save_button_text"><u>SAVE</u></string>
+    <string name="discard_your_mashup">Discard your mashup?</string>
+    <string name="your_progress_will_be_irreversibly_lost">Your progress will be irreversibly lost.</string>
+    <string name="cancel">Cancel</string>
+    <string name="discard">Discard</string>
 </resources>

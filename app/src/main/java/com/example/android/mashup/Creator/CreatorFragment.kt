@@ -17,9 +17,20 @@ import androidx.core.net.toUri
 import android.os.Build
 import androidx.annotation.RequiresApi
 import android.media.MediaMetadataRetriever
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import com.example.android.mashup.utils.AudioWaveformGenerator
 import com.example.android.mashup.utils.OutputType
 import com.google.android.material.slider.RangeSlider
+import android.content.DialogInterface
+import androidx.appcompat.app.AppCompatActivity
+
+import com.example.android.mashup.MainActivity
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,6 +75,10 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
         binding.selectAudioButton.setOnClickListener { view ->
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
+        }
+
+        binding.saveButton.setOnClickListener {
+            findNavController().navigate(R.id.action_creatorFragment_to_cancelDialogFragment2)
         }
 
         val videoStream = resources.openRawResource(R.raw.video)

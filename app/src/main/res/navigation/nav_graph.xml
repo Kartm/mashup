@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_creatorFragment_to_creatorChooseAudioFragment"
             app:destination="@id/creatorChooseAudioFragment" />
+        <action
+            android:id="@+id/action_creatorFragment_to_cancelDialogFragment2"
+            app:destination="@id/cancelDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/creatorChooseVideoFragment"
@@ -61,4 +64,13 @@
         android:name="com.example.android.mashup.CreatorAudio.CreatorChooseAudioFragment"
         android:label="@string/fragment_creator_choose_audio_label"
         tools:layout="@layout/fragment_creator_choose_audio" />
+    <dialog
+        android:id="@+id/cancelDialogFragment"
+        android:name="com.example.android.mashup.Creator.CancelDialogFragment"
+        android:label="fragment_cancel_dialog"
+        tools:layout="@layout/fragment_cancel_dialog" >
+        <action
+            android:id="@+id/action_cancelDialogFragment_to_FirstFragment2"
+            app:destination="@id/FirstFragment" />
+    </dialog>
 </navigation>
