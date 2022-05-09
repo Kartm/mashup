@@ -29,13 +29,7 @@
     </style>
 
     <style name="MyFloatingActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
-        <item name="materialThemeOverlay">@style/UsePrimaryColor</item>
-<!--        <item name="backgroundTint">@color/primaryColor</item>-->
-<!--        <item name="tint">@color/primaryTextColor</item>-->
-    </style>
-
-    <style name="UsePrimaryColor">
-        <item name="colorAccent">@color/primaryColor</item>
-        <item name="colorOnSecondary">@color/primaryTextColor</item>
+        <item name="backgroundTint">@color/primaryColor</item>
+        <item name="tint">@color/primaryTextColor</item>
     </style>
 </resources>
