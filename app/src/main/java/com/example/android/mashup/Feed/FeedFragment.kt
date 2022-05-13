@@ -34,6 +34,11 @@ class FeedFragment : Fragment(), MashupClickListener {
 
         val firstFragment = this
 
+        if (videoList.isEmpty())
+            binding.emptyMessage.visibility = View.VISIBLE
+        else
+            binding.emptyMessage.visibility = View.INVISIBLE
+
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 1)
             adapter = CardAdapter(videoList, firstFragment)
