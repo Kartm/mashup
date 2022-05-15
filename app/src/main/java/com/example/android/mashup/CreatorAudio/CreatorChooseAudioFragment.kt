@@ -193,7 +193,7 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
             if (title == null) {
                 title = uri.toString().split("/").last();
             }
-            val thumbnail = retriever.
+            val thumbnail = retriever.embeddedPicture;
 
 
             if (thumbnail == null || time == null) {
