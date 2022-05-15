@@ -1,4 +1,4 @@
-package com.example.android.mashup.data
+package com.example.android.mashup.videoData.audio
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,18 +7,18 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoUriViewModel(application: Application) : AndroidViewModel(application) {
+class AudioUriViewModel(application: Application) : AndroidViewModel(application) {
 
-    var readAllData: LiveData<List<VideoUri>>;
-    private val repository: VideoUriRepository;
+    var readAllData: LiveData<List<AudioUri>>;
+    private val repository: AudioUriRepository;
 
     init{
-        val videoUriDao = VideoUriDatabase.getDatabase(application).videoUriDao()
-        repository = VideoUriRepository(videoUriDao);
+        val videoUriDao = AudioUriDatabase.getDatabase(application).videoUriDao()
+        repository = AudioUriRepository(videoUriDao);
         readAllData = repository.readAllData;
     }
 
-    fun addVideoUri(videoUri: VideoUri)
+    fun addVideoUri(videoUri: AudioUri)
     {
         viewModelScope.launch(Dispatchers.IO){
             repository.addVideoUri(videoUri);

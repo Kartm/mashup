@@ -56,17 +56,33 @@
         <action
             android:id="@+id/action_creatorFragment_to_saveDialogFragment"
             app:destination="@id/saveDialogFragment" />
+        <argument
+            android:name="VideoUri"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="AudioUri"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/creatorChooseVideoFragment"
         android:name="com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragment"
         android:label="@string/fragment_creator_choose_video_label"
-        tools:layout="@layout/fragment_creator_choose_video" />
+        tools:layout="@layout/fragment_creator_choose_video" >
+        <action
+            android:id="@+id/action_creatorChooseVideoFragment_to_creatorFragment"
+            app:destination="@id/creatorFragment" />
+    </fragment>
     <fragment
         android:id="@+id/creatorChooseAudioFragment"
         android:name="com.example.android.mashup.CreatorAudio.CreatorChooseAudioFragment"
         android:label="@string/fragment_creator_choose_audio_label"
-        tools:layout="@layout/fragment_creator_choose_audio" />
+        tools:layout="@layout/fragment_creator_choose_audio" >
+        <action
+            android:id="@+id/action_creatorChooseAudioFragment_to_creatorFragment"
+            app:destination="@id/creatorFragment" />
+    </fragment>
     <dialog
         android:id="@+id/cancelDialogFragment"
         android:name="com.example.android.mashup.Creator.CancelDialogFragment"

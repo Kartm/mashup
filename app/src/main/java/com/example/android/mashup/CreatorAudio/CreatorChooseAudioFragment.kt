@@ -5,7 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragmentDirections
+import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.R
+import com.example.android.mashup.Video
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,7 +21,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CreatorChooseAudioFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CreatorChooseAudioFragment : Fragment() {
+class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -56,5 +60,10 @@ class CreatorChooseAudioFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onClick(video: Video) {
+        val action = CreatorChooseVideoFragmentDirections.actionCreatorChooseVideoFragmentToCreatorFragment(video.uri, null)
+        findNavController().navigate(action)
     }
 }

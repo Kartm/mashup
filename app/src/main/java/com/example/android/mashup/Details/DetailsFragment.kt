@@ -29,7 +29,7 @@ class DetailsFragment : Fragment() {
 
         binding.description.text = args.video.description
         binding.title.text = args.video.title
-        binding.thumbnail2.setImageBitmap(args.video.thubnail)
+        binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
 
         return binding.root

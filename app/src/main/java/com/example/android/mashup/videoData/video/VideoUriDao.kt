@@ -1,4 +1,4 @@
-package com.example.android.mashup.data
+package com.example.android.mashup.videoData.video
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
