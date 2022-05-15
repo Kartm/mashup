@@ -83,6 +83,7 @@ class FeedFragment : Fragment(), MashupClickListener {
 
     private fun populateVideos(context: Context) {
         val vid1 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid1",
             3,
@@ -90,6 +91,7 @@ class FeedFragment : Fragment(), MashupClickListener {
         )
         videoList.add(vid1)
         val vid2 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid2",
             5,
@@ -97,6 +99,7 @@ class FeedFragment : Fragment(), MashupClickListener {
         )
         videoList.add(vid2)
         val vid3 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid3",
             3,
@@ -104,6 +107,7 @@ class FeedFragment : Fragment(), MashupClickListener {
         )
         videoList.add(vid3)
         val vid4 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid4",
             5,
@@ -111,6 +115,7 @@ class FeedFragment : Fragment(), MashupClickListener {
         )
         videoList.add(vid4)
         val vid5 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid5",
             3,
@@ -118,6 +123,7 @@ class FeedFragment : Fragment(), MashupClickListener {
         )
         videoList.add(vid5)
         val vid6 = Video(
+            "",
             BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
             "vid6",
             5,

@@ -18,10 +18,10 @@ class AudioUriViewModel(application: Application) : AndroidViewModel(application
         readAllData = repository.readAllData;
     }
 
-    fun addVideoUri(videoUri: AudioUri)
+    fun addAudioUri(audioUri: AudioUri)
     {
         viewModelScope.launch(Dispatchers.IO){
-            repository.addVideoUri(videoUri);
+            repository.addVideoUri(audioUri);
         }
     }
 

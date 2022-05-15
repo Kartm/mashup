@@ -41,7 +41,6 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
     private var param1: String? = null
     private var param2: String? = null
 
-
     private lateinit var videoUriViewModel: VideoUriViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
