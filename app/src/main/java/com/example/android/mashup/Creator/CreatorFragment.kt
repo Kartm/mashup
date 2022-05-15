@@ -1,6 +1,7 @@
 package com.example.android.mashup.Creator
 
 import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -192,7 +193,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
     override fun onSuccess(convertedFile: File, type: OutputType) {
         Log.v("me", "success!");
-
+        Log.v("me", Uri.fromFile(convertedFile).toString())
         when (type) {
             OutputType.VIDEO -> {
                 binding.videoView.setVideoURI(convertedFile.toUri())

@@ -1,35 +1,29 @@
 package com.example.android.mashup.CreatorVideo
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.android.mashup.BuildConfig
 import com.example.android.mashup.Feed.CardAdapter
 import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.Video
-import com.example.android.mashup.data.VideoUri
-import com.example.android.mashup.data.VideoUriViewModel
+import com.example.android.mashup.videoData.video.VideoUri
+import com.example.android.mashup.videoData.video.VideoUriViewModel
 import com.example.android.mashup.databinding.FragmentCreatorChooseVideoBinding
-import com.example.android.mashup.videoList
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.util.jar.Manifest
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -46,7 +40,6 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
 
     private lateinit var videoUriViewModel: VideoUriViewModel
 
@@ -116,7 +109,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
     private fun GetVideoDataFromUri(videoUri: VideoUri): Video {
         val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(videoUri.thumbnail)
-        return Video(thumbnail, videoUri.name, videoUri.length, "no");
+        return Video(videoUri.uri, thumbnail, videoUri.name, videoUri.length, "no");
     }
 
     companion object {
@@ -139,25 +132,14 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
             }
     }
 
+
+
     override fun onClick(video: Video) {
-        TODO("Not yet implemented")
+        val action = CreatorChooseVideoFragmentDirections.actionCreatorChooseVideoFragmentToCreatorFragment(video.uri, null)
+        findNavController().navigate(action)
     }
 
 
-    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri == null) {
-            Toast.makeText(context, "No video chosen", Toast.LENGTH_SHORT).show();
-        } else {
-            requireContext().grantUriPermission(
-                BuildConfig.APPLICATION_ID,
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            );
-
-            openFile(uri);
-
-        }
-    }
 
     // Request code for selecting a PDF document.
     val OPEN_THE_THING = 2

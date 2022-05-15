@@ -1,17 +1,26 @@
 package com.example.android.mashup.Feed
 
 import android.content.Context
-import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.mashup.*
 import com.example.android.mashup.databinding.FragmentFeedBinding
+import com.example.android.mashup.videoData.video.VideoUri
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.IOException
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -34,6 +43,8 @@ class FeedFragment : Fragment(), MashupClickListener {
 
         val firstFragment = this
 
+        listAllVideos()
+
         if (videoList.isEmpty())
             binding.emptyMessage.visibility = View.VISIBLE
         else
@@ -44,7 +55,6 @@ class FeedFragment : Fragment(), MashupClickListener {
             adapter = CardAdapter(videoList, firstFragment)
         }
 
-        context?.let { populateVideos(it) }
 
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_FirstFragment_to_creatorFragment)
@@ -81,48 +91,57 @@ class FeedFragment : Fragment(), MashupClickListener {
         _binding = null
     }
 
-    private fun populateVideos(context: Context) {
-        val vid1 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid1",
-            3,
-            "asd"
+    private fun listAllVideos()
+    {
+        val folder = File(
+            requireContext().getExternalFilesDir(null),
+            "Mashup"
         )
-        videoList.add(vid1)
-        val vid2 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid2",
-            5,
-            "lorem"
-        )
-        videoList.add(vid2)
-        val vid3 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid3",
-            3,
-            "asd"
-        )
-        videoList.add(vid3)
-        val vid4 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid4",
-            5,
-            "lorem"
-        )
-        videoList.add(vid4)
-        val vid5 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid5",
-            3,
-            "asd"
-        )
-        videoList.add(vid5)
-        val vid6 = Video(
-            BitmapFactory.decodeResource(context.resources, R.drawable.blackhole),
-            "vid6",
-            5,
-            "lorem"
-        )
-        videoList.add(vid6)
+
+        if (!folder.exists()) {
+            folder.mkdirs()
+        }
+        val directory = File(folder, "video")
+//        Log.d("Files", "Path: $path")
+//        val directory = File(path)
+        val files = directory.listFiles()
+        if (files != null) {
+            Log.d("Files", "Size: " + files.size)
+        }
+        if (files != null) {
+            for (i in files.indices) {
+                val file = files[i];
+                val extension: String = file.absolutePath.substring(file.absolutePath.lastIndexOf("."));
+                Log.i("fileGetting", extension)
+                if(!extension.equals(".mp4")) continue;
+
+                val uri = file.toUri();
+                val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
+                val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
+                val retriever =
+                    MediaMetadataRetriever(); //use one of overloaded setDataSource() functions to set your data source
+                retriever.setDataSource(fileDescriptor);
+                val time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                var title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+                if (title == null) {
+                    title = uri.toString().split("/").last();
+                }
+                val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+                retriever.release()
+
+
+                if (thumbnail == null || time == null) {
+                    Toast.makeText(context, "something was null", Toast.LENGTH_SHORT).show();
+                    return
+
+                };
+
+                val durationInSeconds = time.toLong() / 1000;
+                val video =
+                    Video(uri.toString(), thumbnail, title, durationInSeconds, "no", 0);
+                videoList.add(video);
+
+            }
+        }
     }
 }

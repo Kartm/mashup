@@ -1,4 +1,4 @@
-package com.example.android.mashup.data
+package com.example.android.mashup.videoData.video
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
