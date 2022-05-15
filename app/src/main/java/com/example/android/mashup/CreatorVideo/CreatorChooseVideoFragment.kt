@@ -85,6 +85,10 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
         videoUriViewModel.readAllData.observe(viewLifecycleOwner, Observer { videoUri ->
             val videos = GetVideoDataForUris(videoUri);
+            if (videos.isEmpty())
+                binding.emptyMessage.visibility = View.VISIBLE
+            else
+                binding.emptyMessage.visibility = View.INVISIBLE
             videos.forEach { Log.i("database", it.title) }
             cardAdapter.setData(videos);
         })

@@ -50,17 +50,8 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-//            findNavController().navigate(R.id.action_creatorFragment_to_cancelDialogFragment2)
-//        }
-//
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    //this and the above commented method work fine
-    //the problem is the back navigation via the action bar
-    //somehow need to override it so it uses this function
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
