@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentDetailsBinding
@@ -32,6 +33,11 @@ class DetailsFragment : Fragment() {
         binding.description.text = args.video.description
         binding.title.text = args.video.title
         binding.thumbnail2.setImageBitmap(args.video.thumbnail)
+
+        binding.thumbnail2.setOnClickListener {
+            val action = DetailsFragmentDirections.actionSecondFragmentToDetailsViewFullscreen(args.video.uri)
+            findNavController().navigate(action)
+        }
 
         setHasOptionsMenu(true)
 

@@ -38,7 +38,11 @@
         android:id="@+id/detailsViewFullscreen"
         android:name="com.example.android.mashup.DetailsFullscreen.DetailsViewFullscreen"
         android:label="fragment_details_view_fullscreen"
-        tools:layout="@layout/fragment_details_view_fullscreen" />
+        tools:layout="@layout/fragment_details_view_fullscreen" >
+        <argument
+            android:name="uri_string"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/creatorFragment"
         android:name="com.example.android.mashup.Creator.CreatorFragment"

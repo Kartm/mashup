@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.android.mashup.R
@@ -23,6 +22,7 @@ import android.content.Context
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 
 
 /**
@@ -32,6 +32,7 @@ import androidx.navigation.fragment.findNavController
 class DetailsViewFullscreen : Fragment() {
 
     private var _binding: FragmentDetailsViewFullscreenBinding? = null
+    private val args: DetailsViewFullscreenArgs by navArgs()
     lateinit var simpleExoPlayer: ExoPlayer
 //    private var _binding2 : PlayerControllerBinding? = null
 
@@ -61,9 +62,9 @@ class DetailsViewFullscreen : Fragment() {
 //            }
 //        })
 
-        val uri = resourceToUri(this.requireContext(), R.raw.video)
+        //val uri = resourceToUri(this.requireContext(), R.raw.video)
+        val uri = Uri.parse(args.uriString)
 
-        val videoFile = File("E:\\Repositories\\AndroidStudioProjects-for-Uni\\mashup\\app\\src\\main\\res\\raw\\video.mp4")
         if (uri != null){
             val mediaItem = MediaItem.fromUri(uri)
             simpleExoPlayer.setMediaItem(mediaItem)
