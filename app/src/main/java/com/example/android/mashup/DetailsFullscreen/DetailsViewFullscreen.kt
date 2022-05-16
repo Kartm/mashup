@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentDetailsViewFullscreenBinding
 import com.example.android.mashup.databinding.PlayerControllerBinding
 import com.google.android.exoplayer2.ExoPlayer
@@ -19,10 +18,14 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import java.io.File
 import android.content.ContentResolver
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import android.R
+import android.widget.ImageView
 
 
 /**
@@ -53,6 +56,8 @@ class DetailsViewFullscreen : Fragment() {
         val playerView = binding.player
 //        val btnExitFull = binding2.exitFullscreenBtn
 
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+
         simpleExoPlayer= ExoPlayer.Builder(this.requireContext()).build()
         playerView.player = simpleExoPlayer
         playerView.keepScreenOn = true
@@ -64,6 +69,8 @@ class DetailsViewFullscreen : Fragment() {
 
         //val uri = resourceToUri(this.requireContext(), R.raw.video)
         val uri = Uri.parse(args.uriString)
+
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
 
         if (uri != null){
             val mediaItem = MediaItem.fromUri(uri)
@@ -81,30 +88,33 @@ class DetailsViewFullscreen : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(false);
+            simpleExoPlayer.stop();
+            simpleExoPlayer.seekTo(0);
+        }
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
+        requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val imageView: ImageView = requireView().findViewById<View>(com.example.android.mashup.R.id.exit_fullscreen_btn) as ImageView
 
-//        viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                if (simpleExoPlayer != null) {
-//                    simpleExoPlayer.setPlayWhenReady(false);
-//                    simpleExoPlayer.stop();
-//                    simpleExoPlayer.seekTo(0);
-//                }
-//                requireActivity().onBackPressedDispatcher.onBackPressed()
-//            }
-//
-//        }
-
+        imageView.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
-//
-//        }
-//
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun resourceToUri(context: Context, resID: Int): Uri? {
