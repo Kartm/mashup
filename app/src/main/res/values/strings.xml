@@ -33,6 +33,7 @@
     <string name="save_dialog_title">Save your mashup</string>
     <string name="save">Save</string>
     <string name="empty_video_list_message">Looks like you have not added any videos yet</string>
+    <string name="empty_audio_list_message">Looks like you have not added any audio tracks yet</string>
     <string name="empty_mashup_list_message">Looks like you have no mashups created</string>
     <string name="share">Share</string>
 </resources>
