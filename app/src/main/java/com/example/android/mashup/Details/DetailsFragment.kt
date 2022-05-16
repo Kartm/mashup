@@ -1,6 +1,10 @@
 package com.example.android.mashup.Details
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,11 +35,13 @@ class DetailsFragment : Fragment() {
 
         binding.description.text = args.video.description
         binding.title.text = args.video.title
-        binding.thumbnail2.setImageBitmap(args.video.thubnail)
+        binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
         binding.thumbnail2.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_detailsViewFullscreen)
         }
+
+        setHasOptionsMenu(true)
 
 
         return binding.root
