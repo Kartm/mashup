@@ -21,11 +21,12 @@
 
                 <ImageView
                     android:id="@+id/thumbnail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="225dp"
                     android:src="@drawable/blackhole"
                     android:adjustViewBounds="true"
-                    android:contentDescription="@string/thumbnail"/>
+                    android:contentDescription="@string/thumbnail"
+                        android:scaleType="centerCrop"/>
 
                 <TextView
                     android:id="@+id/title"

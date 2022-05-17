@@ -37,12 +37,10 @@ class DetailsViewFullscreen : Fragment() {
     private var _binding: FragmentDetailsViewFullscreenBinding? = null
     private val args: DetailsViewFullscreenArgs by navArgs()
     lateinit var simpleExoPlayer: ExoPlayer
-//    private var _binding2 : PlayerControllerBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-//    private val binding2 get() = _binding2!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,23 +49,14 @@ class DetailsViewFullscreen : Fragment() {
     ): View? {
 
         _binding = FragmentDetailsViewFullscreenBinding.inflate(inflater, container, false)
-//        _binding2 = PlayerControllerBinding.inflate(inflater, container, false)
 
         val playerView = binding.player
-//        val btnExitFull = binding2.exitFullscreenBtn
 
-        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE;
 
         simpleExoPlayer= ExoPlayer.Builder(this.requireContext()).build()
         playerView.player = simpleExoPlayer
         playerView.keepScreenOn = true
-//        simpleExoPlayer.addListener(object : Player.Listener{
-//            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-//                super.onPlayerStateChanged(playWhenReady, playbackState)
-//            }
-//        })
-
-        //val uri = resourceToUri(this.requireContext(), R.raw.video)
         val uri = Uri.parse(args.uriString)
 
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -81,9 +70,6 @@ class DetailsViewFullscreen : Fragment() {
         else{
             Log.i("full", "uri is null")
         }
-
-
-
         return binding.root
 
     }
@@ -102,6 +88,7 @@ class DetailsViewFullscreen : Fragment() {
         }
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
         requireActivity().window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
+        activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

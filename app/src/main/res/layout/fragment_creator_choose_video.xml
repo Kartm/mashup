@@ -23,8 +23,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icon_upload_black"
-        style="@style/MyFloatingActionButton"/>
+        app:srcCompat="@drawable/icon_upload_black"/>
+<!--        style="@style/MyFloatingActionButton"-->
 
     <TextView
         android:id="@+id/emptyMessage"
