@@ -1,5 +1,6 @@
 package com.example.android.mashup.Feed
 
+import android.R.attr
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
@@ -22,7 +23,7 @@ import com.example.android.mashup.videoData.video.VideoUri
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-
+import android.R.attr.orientation
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -53,24 +54,16 @@ class FeedFragment : Fragment(), MashupClickListener {
             binding.emptyMessage.visibility = View.INVISIBLE
 
         val orientation = resources.configuration.orientation
-        val span = if (orientation == Configuration.ORIENTATION_LANDSCAPE){
-            2
-        } else {
-            1
-        }
+        val span = if(orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, span)
             adapter = CardAdapter(videoList, firstFragment)
         }
 
-
         binding.fab.setOnClickListener { view ->
             findNavController().navigate(R.id.action_FirstFragment_to_creatorFragment)
         }
-
-
-
 
         return binding.root
 
