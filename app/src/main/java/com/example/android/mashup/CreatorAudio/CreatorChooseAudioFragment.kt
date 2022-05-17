@@ -17,7 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragmentDirections
 import com.example.android.mashup.Feed.CardAdapter
 import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.Video

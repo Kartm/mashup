@@ -19,14 +19,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_play"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:contentDescription="@string/play_button_description" />
 
         <ImageView
             android:id="@+id/exo_pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_pause"
-            app:tint="@color/white"/>
+            app:tint="@color/white"
+            android:contentDescription="@string/pause_button_description" />
 
     </LinearLayout>
 
@@ -53,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/"
+                android:text="@string/out_of"
                 android:textColor="#CBCDC8"
                 android:layout_marginEnd="4dp"/>
 
@@ -69,7 +71,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/icon_fullscreen_exit_24"
-                app:tint="@color/white"/>
+                app:tint="@color/white"
+                android:contentDescription="@string/exit_fullscreen_description" />
         </LinearLayout>
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar

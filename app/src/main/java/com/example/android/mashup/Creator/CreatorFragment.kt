@@ -76,10 +76,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
-//        binding.saveButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_creatorFragment_to_saveDialogFragment)
-//        }
-
         val videoStream = resources.openRawResource(R.raw.video)
         val videoFile: File = createTempFile()
 

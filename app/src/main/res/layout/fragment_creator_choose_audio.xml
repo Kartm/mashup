@@ -23,7 +23,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icon_upload_black" />
+        app:srcCompat="@drawable/icon_upload_black"
+        android:contentDescription="@string/select_audio_description" />
     <!--        style="@style/MyFloatingActionButton"-->
 
     <TextView

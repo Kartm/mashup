@@ -82,7 +82,8 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/wave_form_description" />
 
             <com.google.android.material.slider.RangeSlider
                 android:id="@+id/rangeBar"
@@ -109,7 +110,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+            android:contentDescription="@string/playPauseButton_description" />
 
         <ImageButton
             android:id="@+id/rewindButton"
@@ -120,7 +122,8 @@
             android:background="?android:selectableItemBackground"
             app:layout_constraintBottom_toBottomOf="@+id/playPauseButton"
             app:layout_constraintEnd_toStartOf="@+id/playPauseButton"
-            app:layout_constraintTop_toTopOf="@+id/playPauseButton" />
+            app:layout_constraintTop_toTopOf="@+id/playPauseButton"
+            android:contentDescription="@string/rewindButton_description" />
 
 <!--        <Button-->
 <!--            android:id="@+id/saveButton"-->
