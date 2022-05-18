@@ -1,6 +1,7 @@
 package com.example.android.mashup.CreatorVideo
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
@@ -71,8 +72,11 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
             this@CreatorChooseVideoFragment
         );
 
+        val orientation = resources.configuration.orientation
+        val span = if(orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 1)
+            layoutManager = GridLayoutManager(context, span)
             adapter = cardAdapter
         }
 

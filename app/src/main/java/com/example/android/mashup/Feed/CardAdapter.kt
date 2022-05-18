@@ -3,7 +3,6 @@ package com.example.android.mashup.Feed
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.Video
 import com.example.android.mashup.databinding.CardViewBinding
 
@@ -29,7 +28,7 @@ class CardAdapter(
 
     fun setData(videos: List<Video>)
     {
-        this.videos = videos;
-        notifyDataSetChanged();
+        this.videos = videos
+        notifyDataSetChanged()
     }
 }

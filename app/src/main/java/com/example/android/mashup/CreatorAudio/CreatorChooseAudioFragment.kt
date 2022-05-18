@@ -1,6 +1,7 @@
 package com.example.android.mashup.CreatorAudio
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
@@ -16,7 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragmentDirections
 import com.example.android.mashup.Feed.CardAdapter
 import com.example.android.mashup.Feed.MashupClickListener
 import com.example.android.mashup.Video
@@ -69,8 +69,11 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
             GetVideoDataForUris(audioUriViewModel.readAllData.value), this
         );
 
+        val orientation = resources.configuration.orientation
+        val span = if(orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 1)
+            layoutManager = GridLayoutManager(context, span)
             adapter = cardAdapter
         };
 

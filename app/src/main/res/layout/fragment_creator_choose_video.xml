@@ -24,7 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/icon_upload_black"
-        style="@style/MyFloatingActionButton"/>
+        android:contentDescription="@string/select_video_description" />
+<!--        style="@style/MyFloatingActionButton"-->
 
     <TextView
         android:id="@+id/emptyMessage"

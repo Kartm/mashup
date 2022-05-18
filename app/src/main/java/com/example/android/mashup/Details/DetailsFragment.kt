@@ -48,10 +48,9 @@ class DetailsFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.details_menu, menu)
-        //todo add check if share is possible so it isn't displayed if can't be shared
         if (null == getShareIntent().resolveActivity(requireActivity().packageManager)) {
             //hide the share menu if doesn't resolve
-            menu?.findItem(R.id.share)?.setVisible(false)
+            menu?.findItem(R.id.share)?.isVisible = false
         }
     }
 
@@ -82,10 +81,6 @@ class DetailsFragment : Fragment() {
 
     private fun shareMashup() {
         startActivity(getShareIntent())
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroyView() {

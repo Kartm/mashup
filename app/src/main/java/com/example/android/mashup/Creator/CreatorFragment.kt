@@ -5,9 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
@@ -78,10 +76,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
-        binding.saveButton.setOnClickListener {
-            findNavController().navigate(R.id.action_creatorFragment_to_saveDialogFragment)
-        }
-
         val videoStream = resources.openRawResource(R.raw.video)
         val videoFile: File = createTempFile()
 
@@ -136,7 +130,25 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                 )
             }
         })
+
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.creator_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.save -> saveMashup()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveMashup(){
+        findNavController().navigate(R.id.action_creatorFragment_to_saveDialogFragment)
     }
 
     private fun generateWaveform(audioFile: File, filename: File) {

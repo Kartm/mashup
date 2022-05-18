@@ -16,7 +16,6 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/select_audio"
-        style="@style/MyFloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -24,7 +23,9 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/icon_upload_black" />
+        app:srcCompat="@drawable/icon_upload_black"
+        android:contentDescription="@string/select_audio_description" />
+    <!--        style="@style/MyFloatingActionButton"-->
 
     <TextView
         android:id="@+id/emptyMessage"

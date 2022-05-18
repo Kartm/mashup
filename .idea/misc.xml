@@ -13,14 +13,20 @@
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/drawable/icon_share_black.xml" value="0.3828125" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/drawable/marker_thumb.xml" value="0.3828125" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/card_view.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/content_main.xml" value="0.21770833333333334" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/custom_edit_row.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/custom_save.xml" value="0.20520833333333333" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_cancel_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_creator.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_creator.xml" value="0.12878787878787878" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_creator_choose_audio.xml" value="0.2015625" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_creator_choose_video.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_details.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_details_view_fullscreen.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_feed.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/fragment_save_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/layout/player_controller.xml" value="0.36666666666666664" />
+        <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/menu/creator_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Repositories/AndroidStudioProjects-for-Uni/mashup/app/src/main/res/menu/details_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/mashup/app/src/main/res/layout/activity_main.xml" value="0.15625" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/mashup/app/src/main/res/layout/card_view.xml" value="0.1" />

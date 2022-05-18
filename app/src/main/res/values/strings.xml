@@ -1,20 +1,11 @@
 <resources>
     <string name="app_name">Mashup</string>
-    <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Your Mashups</string>
     <string name="second_fragment_label">Details</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="select_video">Select video</string>
-    <string name="select_audio">Select audio</string>
+    <string name="select_video"><u>Select video</u></string>
+    <string name="select_audio"><u>Select audio</u></string>
     <string name="thumbnail">Thumbnail representing the mashup</string>
     <string name="title_place_holder">Placeholder title</string>
     <string name="author_placeholder">Placeholder duration</string>
@@ -36,4 +27,14 @@
     <string name="empty_audio_list_message">Looks like you have not added any audio tracks yet</string>
     <string name="empty_mashup_list_message">Looks like you have no mashups created</string>
     <string name="share">Share</string>
+    <string name="wave_form_description">Wave function of the selected audio track</string>
+    <string name="playPauseButton_description">Play and pause button</string>
+    <string name="rewindButton_description">Restart video button</string>
+    <string name="select_audio_description">Floating action button to upload an audio file from the device</string>
+    <string name="select_video_description">Floating action button to upload a video file from the device</string>
+    <string name="addMashup_description">Floating action button to add a new mashup</string>
+    <string name="play_button_description">Play button</string>
+    <string name="pause_button_description">Pause button</string>
+    <string name="out_of">/</string>
+    <string name="exit_fullscreen_description">Exit fullscreen</string>
 </resources>
