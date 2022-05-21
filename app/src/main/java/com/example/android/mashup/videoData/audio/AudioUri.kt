@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "video_uri_table")
+@Entity(tableName = "audio_uri_table")
 data class AudioUri (
     @PrimaryKey(autoGenerate = true)
     val id: Int,

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [AudioUri::class], version = 1, exportSchema = false)
 abstract class AudioUriDatabase : RoomDatabase() {
-    abstract fun videoUriDao(): AudioUriDao;
+    abstract fun audioUriDao(): AudioUriDao;
 
     companion object {
         @Volatile
@@ -24,7 +24,7 @@ abstract class AudioUriDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AudioUriDatabase::class.java,
-                    "video_uri_database"
+                    "audio_uri_database"
                 ).build();
                 INSTANCE = instance;
                 return instance;

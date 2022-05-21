@@ -8,11 +8,11 @@ import androidx.room.Query
 @Dao
 interface AudioUriDao {
     @Insert()
-    fun addVideoUri(videoUri: AudioUri)
+    fun addAudioUri(audioUri: AudioUri)
 
-    @Query("SELECT * FROM video_uri_table ORDER BY id ASC")
+    @Query("SELECT * FROM audio_uri_table ORDER BY id ASC")
     fun readAllData() : LiveData<List<AudioUri>>
 
-    @Query("DELETE FROM video_uri_table")
+    @Query("DELETE FROM audio_uri_table")
     fun nukeTable()
 }
