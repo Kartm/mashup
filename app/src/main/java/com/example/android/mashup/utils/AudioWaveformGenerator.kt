@@ -47,34 +47,12 @@ class AudioWaveformGenerator private constructor(private val context: Context) {
 
         val outputLocation = Utils.getConvertedFile(outputPath, outputFileName)
 
-        val query = arrayOf("-i", audio!!.path, "-filter_complex", "showwavespic=s=640x120", "-frames:v", "1", outputLocation.path)
+        val query = arrayOf("-i", audio!!.path, "-filter_complex", "showwavespic=s=640x120:colors=gray", "-frames:v", "1", outputLocation.path)
 
-        // todo generate waveform from ffmpeg
         CallBackOfQuery().callQuery(query, object : FFmpegCallBack {
-            override fun statisticsProcess(statistics: Statistics) {
-//                Log.i("FFMPEG LOG : ", statistics.videoFrameNumber.toString())
-            }
-
-            override fun process(logMessage: LogMessage) {
-//                Log.i("FFMPEG LOG : ", logMessage.text)
-//                callback!!.onProgress(logMessage.text)
-            }
-
             override fun success() {
                 Log.v("me", "waveform ready: $outputLocation")
-//                Utils.refreshGallery(outputLocation.path, context)
                 callback!!.onSuccess(outputLocation, OutputType.WAVEFORM)
-            }
-
-            override fun cancel() {
-//                callback!!.onFailure(IOException("Canceled"))
-            }
-
-            override fun failed() {
-//                if (outputLocation.exists()) {
-//                    outputLocation.delete()
-//                }
-//                callback!!.onFailure(IOException("Failed"))
             }
         })
     }

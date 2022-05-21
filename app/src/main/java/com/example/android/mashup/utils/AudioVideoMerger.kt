@@ -10,11 +10,11 @@ import java.io.File
 import java.io.IOException
 
 interface FFMpegCallback {
-    fun onProgress(progress: String)
+    fun onProgress(progress: String) {}
     fun onSuccess(convertedFile: File, type: OutputType)
-    fun onFailure(error: Exception)
-    fun onNotAvailable(error: Exception)
-    fun onFinish()
+    fun onFailure(error: Exception) {}
+    fun onNotAvailable(error: Exception) {}
+    fun onFinish() {}
 }
 
 object Utils {
