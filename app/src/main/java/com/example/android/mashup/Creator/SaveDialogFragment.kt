@@ -37,7 +37,9 @@ class SaveDialogFragment : DialogFragment() {
 
             if (args.resultPath != null) {
                 val dir1 = File(
-                    requireContext().applicationInfo.dataDir, "results"
+//                    requireContext().applicationInfo.dataDir, "results"
+//                    requireContext().filesDir, "results"
+                    requireContext().getExternalFilesDir(null), "results"
                 )
                 if (!dir1.exists()) {
                     dir1.mkdirs()

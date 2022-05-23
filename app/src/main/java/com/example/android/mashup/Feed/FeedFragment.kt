@@ -66,7 +66,9 @@ class FeedFragment : Fragment(), MashupClickListener {
 
     private fun listAllVideos() {
         val directory = File(
-            requireContext().applicationInfo.dataDir, "results"
+//            requireContext().applicationInfo.dataDir, "results"
+//            requireContext().filesDir, "results"
+            requireContext().getExternalFilesDir(null), "results"
         )
         if (!directory.exists()) {
             directory.mkdirs()
