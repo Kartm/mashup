@@ -81,9 +81,11 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
         binding.playPauseButton.setOnClickListener {
             if(binding.videoView.isPlaying){
-                binding.videoView.pause();
+                binding.videoView.pause()
+                binding.playPauseButton.setImageResource(R.drawable.icon_play)
             } else {
-                binding.videoView.start();
+                binding.videoView.start()
+                binding.playPauseButton.setImageResource(R.drawable.icon_pause)
             }
         }
         binding.rewindButton.setOnClickListener {
