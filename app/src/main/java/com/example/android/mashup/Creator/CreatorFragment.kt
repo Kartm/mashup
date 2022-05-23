@@ -4,9 +4,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
@@ -74,14 +72,6 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             findNavController().navigate(R.id.action_creatorFragment_to_creatorChooseAudioFragment)
         }
 
-        binding.saveButton.setOnClickListener {
-            val action =
-                CreatorFragmentDirections.actionCreatorFragmentToSaveDialogFragment(
-                    outputUri.toString()
-                )
-            findNavController().navigate(action)
-        }
-
         binding.videoView.setOnPreparedListener { it.isLooping = true }
 
         binding.playPauseButton.setOnClickListener {
@@ -144,6 +134,24 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
         setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.creator_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.save -> {
+                val action =
+                    CreatorFragmentDirections.actionCreatorFragmentToSaveDialogFragment(
+                        outputUri.toString()
+                    )
+                findNavController().navigate(action)
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun generateWaveform(audioFile: File, filename: File) {

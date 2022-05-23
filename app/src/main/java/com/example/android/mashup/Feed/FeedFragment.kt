@@ -1,11 +1,10 @@
 package com.example.android.mashup.Feed
 
+import android.content.res.Configuration
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -35,8 +34,11 @@ class FeedFragment : Fragment(), MashupClickListener {
         else
             binding.emptyMessage.visibility = View.INVISIBLE
 
+        val orientation = resources.configuration.orientation
+        val span = if(orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+
         binding.recyclerView.apply {
-            layoutManager = GridLayoutManager(context, 1)
+            layoutManager = GridLayoutManager(context, span)
             adapter = CardAdapter(videoList, firstFragment)
         }
 
