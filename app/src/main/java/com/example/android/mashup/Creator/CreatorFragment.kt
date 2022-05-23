@@ -75,6 +75,10 @@ class CreatorFragment : Fragment(), FFMpegCallback {
 
         binding.videoView.setOnPreparedListener { it.isLooping = true }
 
+        binding.frameLayout2.visibility = View.INVISIBLE
+        binding.playPauseButton.visibility = View.INVISIBLE
+        binding.rewindButton.visibility = View.INVISIBLE
+
         binding.playPauseButton.setOnClickListener {
             if(binding.videoView.isPlaying){
                 binding.videoView.pause();
@@ -198,6 +202,9 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                 binding.videoView.seekTo(0)
                 binding.videoView.start()
                 outputUri = convertedFile.toUri()
+                binding.frameLayout2.visibility = View.VISIBLE
+                binding.playPauseButton.visibility = View.VISIBLE
+                binding.rewindButton.visibility = View.VISIBLE
             }
             OutputType.WAVEFORM -> {
                 binding.imageView.setImageURI(null) // because sometimes the change is not registered
