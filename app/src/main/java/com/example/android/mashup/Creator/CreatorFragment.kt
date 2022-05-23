@@ -4,6 +4,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -127,6 +128,8 @@ class CreatorFragment : Fragment(), FFMpegCallback {
                 this.filename = File(folder, "video")
 
                 generateWaveform(this.audioFile!!, filename!!)
+
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -199,6 +202,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             OutputType.WAVEFORM -> {
                 binding.imageView.setImageURI(null) // because sometimes the change is not registered
                 binding.imageView.setImageURI(convertedFile.toUri())
+                makeMashup(0.0f, 1.0f)
             }
         }
     }
