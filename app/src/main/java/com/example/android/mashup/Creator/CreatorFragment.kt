@@ -142,6 +142,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
             }
         }
 
+        setHasOptionsMenu(true)
         return binding.root
     }
 
