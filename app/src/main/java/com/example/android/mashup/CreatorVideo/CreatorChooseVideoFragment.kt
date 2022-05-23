@@ -82,7 +82,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
 
     private fun GetVideoDataFromUri(videoUri: VideoUri): Video {
         val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(videoUri.thumbnail)
-        return Video(videoUri.uri, thumbnail, videoUri.name, videoUri.length, "no");
+        return Video(videoUri.uri, thumbnail, videoUri.name, videoUri.length);
     }
 
     override fun onClick(video: Video) {

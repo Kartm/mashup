@@ -30,7 +30,9 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        binding.description.text = args.video.description
+        val durationMins = args.video.duration.toInt() / 60;
+        val durationSec = args.video.duration.toInt() % 60;
+        binding.duration.text = "${durationMins} min ${durationSec} s"
         binding.title.text = args.video.title
         binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
@@ -57,7 +59,6 @@ class DetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item!!.itemId) {
             R.id.share -> shareMashup()
-            R.id.save -> saveMashup()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -71,12 +72,6 @@ class DetailsFragment : Fragment() {
             .setText("lmao share")
             .setType("text/plain")
             .intent
-    }
-
-
-    private fun saveMashup() {
-        Toast.makeText(context, "you tried to save", Toast.LENGTH_SHORT).show()
-        //todo this
     }
 
     private fun shareMashup() {
