@@ -4,30 +4,31 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.media.MediaMetadataRetriever
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.mashup.Feed.CardAdapter
 import com.example.android.mashup.Feed.MashupClickListener
+import com.example.android.mashup.R
 import com.example.android.mashup.Video
 import com.example.android.mashup.databinding.FragmentCreatorChooseAudioBinding
 import com.example.android.mashup.videoData.audio.AudioUri
 import com.example.android.mashup.videoData.audio.AudioUriViewModel
-
-import android.os.Build
-import androidx.annotation.RequiresApi
-import android.graphics.Canvas
 import java.io.*
-import androidx.core.net.toUri
 
 
 class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
@@ -49,7 +50,7 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
         );
 
         val orientation = resources.configuration.orientation
-        val span = if(orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
+        val span = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 2 else 1
 
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, span)
@@ -163,8 +164,8 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
 
             val stream = ByteArrayOutputStream()
             thumbnailBmp!!.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val thumbnailByteArray = stream.toByteArray()
-            thumbnailBmp!!.recycle()
+            val thumbnailByteArray = resources.getDrawable(R.drawable.icon_volume);
+//            thumbnailBmp!!.recycle()
 
             if (thumbnailByteArray == null || time == null) {
                 Toast.makeText(context, "something was null", Toast.LENGTH_SHORT).show();
@@ -172,16 +173,40 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
 
             };
 
-            if (thumbnailByteArray == null) {
-                Toast.makeText(context, "thumbnail was null", Toast.LENGTH_SHORT).show();
-                return
-            }
+//            if (thumbnailByteArray == null) {
+//                Toast.makeText(context, "thumbnail was null", Toast.LENGTH_SHORT).show();
+//                return
+//            }
+
+
+
+
+
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.icon_volume)
+
+            val bitmap = Bitmap.createBitmap(
+                drawable!!.intrinsicWidth,
+                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
+            )
+            val c = Canvas(bitmap)
+            drawable.setBounds(0, 0, c.width, c.height)
+            drawable.draw(c)
+
+            val s = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, s)
+            val byteArray = s.toByteArray()
+            bitmap.recycle()
+
+
 
             val durationInSeconds = time.toLong() / 1000;
             val audioUri =
-                AudioUri(0, file.toUri().toString(), thumbnailByteArray, title, durationInSeconds);
+                AudioUri(0, file.toUri().toString(), byteArray, title, durationInSeconds);
             audioUriViewModel.addAudioUri(audioUri);
+
             return;
         };
+
+
     }
 }

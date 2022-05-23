@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-cache-path name="my_results" path="results"/>
+    <files-path name="files" path="."/>
+    <files-path name="files/results" path="files/results/"/>
+    <files-path name="results" path="/"/>
+    <files-path name="results" path="../results/"/>
+    <files-path name="results" path="results/"/>
+
+    <cache-path name="cache" path="." />
+    <external-path name="external" path="." />
+
+    <root-path name="root" path="." />
+    <files-path name="results" path="/" />
+    <files-path name="results" path="aaa.mp4/"/>
+    <files-path name="files" path="." />
+
+    <external-path name="external_files" path="." />
+    <external-path name="images" path="results" />
+    <external-path name="results" path="." />
+    <external-path name="results" path="Android/data/com.example.android.mashup/files/results" />
+    <external-path name="results" path="Android/data/com.example.android.mashup/files/results/" />
+
+    <external-files-path name="images" path="results"/>
+    <external-files-path name="camera_image" path="results/"/>
+    <external-files-path name="external_files" path="." />
+    <external-files-path name="results" path="results" />
+
+    <external-cache-path name="external_cache" path="." />
+</paths>
+<!--https://stackoverflow.com/questions/42516126/fileprovider-illegalargumentexception-failed-to-find-configured-root-->
+<!--https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed-->

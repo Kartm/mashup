@@ -1,15 +1,20 @@
 package com.example.android.mashup.Details
 
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentDetailsBinding
+import java.io.File
+
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -35,7 +40,8 @@ class DetailsFragment : Fragment() {
         binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
         binding.thumbnail2.setOnClickListener {
-            val action = DetailsFragmentDirections.actionSecondFragmentToDetailsViewFullscreen(args.video.uri)
+            val action =
+                DetailsFragmentDirections.actionSecondFragmentToDetailsViewFullscreen(args.video.uri)
             findNavController().navigate(action)
         }
 
@@ -45,13 +51,18 @@ class DetailsFragment : Fragment() {
 
     }
 
+    override fun onSaveInstanceState(oldInstanceState: Bundle) {
+        super.onSaveInstanceState(oldInstanceState)
+        oldInstanceState.clear()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.details_menu, menu)
-        if (null == getShareIntent().resolveActivity(requireActivity().packageManager)) {
-            //hide the share menu if doesn't resolve
-            menu?.findItem(R.id.share)?.isVisible = false
-        }
+//        if (null == getShareIntent().resolveActivity(requireActivity().packageManager)) {
+//            //hide the share menu if doesn't resolve
+//            menu?.findItem(R.id.share)?.isVisible = false
+//        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,7 +73,7 @@ class DetailsFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    //todo change this to video
+/*    //todo change this to video
     private fun getShareIntent() : Intent {
         val args: DetailsFragmentArgs by navArgs()
         return ShareCompat.IntentBuilder.from(requireActivity())
@@ -71,8 +82,46 @@ class DetailsFragment : Fragment() {
             .setText("lmao share")
             .setType("text/plain")
             .intent
-    }
+    }*/
 
+/*
+//    https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+
+    //todo change this to video
+    private fun getShareIntent(): Intent {
+        val videoFile = File(args.video.uri)
+        val videoURI: Uri = videoFile.toUri();
+        Log.i("share", "trying to share: $videoURI")
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            FileProvider.getUriForFile(
+//                requireContext(),
+//                requireContext().getPackageName() + ".provider",
+//                videoFile
+//            )
+//        } else Uri.fromFile(videoFile)
+        return ShareCompat.IntentBuilder.from(requireActivity())
+            .setType("video/*")
+            .setStream(videoURI)
+            .setChooserTitle("Share video...")
+            .intent
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            .createChooser()
+    }
+ */
+ */
+
+    //    https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
+    //todo change this to video
+    private fun getShareIntent() {
+        val intentShareFile = Intent(Intent.ACTION_SEND)
+        val fileWithinMyDir = File(args.video.uri)
+        val certifiedUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", fileWithinMyDir);
+        intentShareFile.type = "video/*"
+        intentShareFile.putExtra(Intent.EXTRA_STREAM, certifiedUri)
+        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "cool video")
+        intentShareFile.putExtra(Intent.EXTRA_TEXT, "cool extra text")
+        startActivity(Intent.createChooser(intentShareFile, "jupi"))
+    }
 
     private fun saveMashup() {
         Toast.makeText(context, "you tried to save", Toast.LENGTH_SHORT).show()
@@ -80,7 +129,8 @@ class DetailsFragment : Fragment() {
     }
 
     private fun shareMashup() {
-        startActivity(getShareIntent())
+//        startActivity(getShareIntent())
+        getShareIntent()
     }
 
     override fun onDestroyView() {

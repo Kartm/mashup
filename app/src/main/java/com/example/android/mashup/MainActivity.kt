@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.database.CursorWindow
 import android.os.Bundle
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -26,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     private val RECORD_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+//        val builder = VmPolicy.Builder()
+//        StrictMode.setVmPolicy(builder.build())
+
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
