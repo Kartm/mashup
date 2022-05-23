@@ -13,7 +13,10 @@ class CardViewHolder(
     {
         cardCellBinding.thumbnail.setImageBitmap(video.thumbnail)
         cardCellBinding.title.text = video.title
-        cardCellBinding.duration.text = video.duration.toString()
+
+        val durationMins = video.duration.toInt() / 60;
+        val durationSec = video.duration.toInt() % 60;
+        cardCellBinding.duration.text  = "${durationMins} min ${durationSec} s"
 
         cardCellBinding.cardView.setOnClickListener{
             clickListener.onClick(video)

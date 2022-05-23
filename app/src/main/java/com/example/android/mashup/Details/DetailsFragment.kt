@@ -30,7 +30,9 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        binding.description.text = args.video.description
+        val durationMins = args.video.duration.toInt() / 60;
+        val durationSec = args.video.duration.toInt() % 60;
+        binding.duration.text = "${durationMins} min ${durationSec} s"
         binding.title.text = args.video.title
         binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
