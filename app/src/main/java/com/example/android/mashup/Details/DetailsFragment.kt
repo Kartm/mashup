@@ -57,7 +57,6 @@ class DetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item!!.itemId) {
             R.id.share -> shareMashup()
-            R.id.save -> saveMashup()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -71,12 +70,6 @@ class DetailsFragment : Fragment() {
             .setText("lmao share")
             .setType("text/plain")
             .intent
-    }
-
-
-    private fun saveMashup() {
-        Toast.makeText(context, "you tried to save", Toast.LENGTH_SHORT).show()
-        //todo this
     }
 
     private fun shareMashup() {
