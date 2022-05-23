@@ -9,13 +9,4 @@
         android:title="@string/share"
         android:visible="true"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/save"
-        android:enabled="true"
-        android:icon="@drawable/icon_download"
-        android:title="@string/save"
-        android:visible="true"
-        app:showAsAction="ifRoom" />
-
 </menu>

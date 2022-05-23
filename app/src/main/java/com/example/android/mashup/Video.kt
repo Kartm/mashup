@@ -15,6 +15,5 @@ class Video(
     var thumbnail: Bitmap,
     var title: String,
     var duration: Number,
-    var description: String,
     val id: Int? = videoList.size
 ) : Parcelable

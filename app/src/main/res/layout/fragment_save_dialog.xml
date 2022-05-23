@@ -36,46 +36,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/save_dialog_title" />
 
-    <EditText
-        android:id="@+id/input_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:textSize="14sp"
-        android:hint="@string/save_dialog_input_description"
-        app:layout_constraintEnd_toEndOf="@+id/input_title"
-        app:layout_constraintStart_toStartOf="@+id/input_title"
-        app:layout_constraintTop_toBottomOf="@+id/input_title" />
-
     <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="@string/save"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="?android:selectableItemBackground"
+        android:text="@string/save"
         android:textColor="@color/secondaryColor"
         app:layout_constraintBottom_toBottomOf="@+id/cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cancel_button"
-        app:layout_constraintTop_toTopOf="@+id/cancel_button" />
+        app:layout_constraintTop_toBottomOf="@+id/input_title" />
 
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/cancel"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:background="?android:selectableItemBackground"
+        android:text="@string/cancel"
         android:textColor="@color/secondaryColor"
         app:layout_constraintEnd_toStartOf="@+id/save_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/input_description" />
+        app:layout_constraintTop_toBottomOf="@+id/input_title" />
 </androidx.constraintlayout.widget.ConstraintLayout>

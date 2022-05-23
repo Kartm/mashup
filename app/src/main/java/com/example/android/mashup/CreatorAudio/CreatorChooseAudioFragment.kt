@@ -110,7 +110,7 @@ class CreatorChooseAudioFragment : Fragment(), MashupClickListener {
 
     private fun GetAudioDataFromUri(audioUri: AudioUri): Video {
         val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(audioUri.thumbnail)
-        return Video(audioUri.uri, thumbnail, audioUri.name, audioUri.length, "no");
+        return Video(audioUri.uri, thumbnail, audioUri.name, audioUri.length);
     }
 
     private fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap {

@@ -107,7 +107,7 @@ class FeedFragment : Fragment(), MashupClickListener {
 
                 val durationInSeconds = time.toLong() / 1000;
                 val video =
-                    Video(uri.toString(), thumbnail, title, durationInSeconds, "no", 0);
+                    Video(uri.toString(), thumbnail, title, durationInSeconds, 0);
                 videoList.add(video);
 
             }

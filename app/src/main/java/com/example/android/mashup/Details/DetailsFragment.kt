@@ -35,7 +35,9 @@ class DetailsFragment : Fragment() {
 
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        binding.description.text = args.video.description
+        val durationMins = args.video.duration.toInt() / 60;
+        val durationSec = args.video.duration.toInt() % 60;
+        binding.duration.text = "${durationMins} min ${durationSec} s"
         binding.title.text = args.video.title
         binding.thumbnail2.setImageBitmap(args.video.thumbnail)
 
@@ -51,11 +53,6 @@ class DetailsFragment : Fragment() {
 
     }
 
-    override fun onSaveInstanceState(oldInstanceState: Bundle) {
-        super.onSaveInstanceState(oldInstanceState)
-        oldInstanceState.clear()
-    }
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.details_menu, menu)
@@ -68,7 +65,6 @@ class DetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item!!.itemId) {
             R.id.share -> shareMashup()
-            R.id.save -> saveMashup()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -82,33 +78,9 @@ class DetailsFragment : Fragment() {
             .setText("lmao share")
             .setType("text/plain")
             .intent
-    }*/
-
-/*
-//    https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
-
-    //todo change this to video
-    private fun getShareIntent(): Intent {
-        val videoFile = File(args.video.uri)
-        val videoURI: Uri = videoFile.toUri();
-        Log.i("share", "trying to share: $videoURI")
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            FileProvider.getUriForFile(
-//                requireContext(),
-//                requireContext().getPackageName() + ".provider",
-//                videoFile
-//            )
-//        } else Uri.fromFile(videoFile)
-        return ShareCompat.IntentBuilder.from(requireActivity())
-            .setType("video/*")
-            .setStream(videoURI)
-            .setChooserTitle("Share video...")
-            .intent
-            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            .createChooser()
     }
  */
- */
+
 
     //    https://stackoverflow.com/questions/38200282/android-os-fileuriexposedexception-file-storage-emulated-0-test-txt-exposed
     //todo change this to video
