@@ -106,7 +106,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="40dp"
             android:background="?android:selectableItemBackground"
-            android:src="@drawable/icon_play"
+            android:src="@drawable/icon_pause"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
