@@ -1,17 +1,10 @@
 package com.example.android.mashup.Feed
 
-import android.R.attr
-import android.app.Activity
-import android.content.Context
 import android.content.res.Configuration
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -19,33 +12,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.android.mashup.*
 import com.example.android.mashup.databinding.FragmentFeedBinding
-import com.example.android.mashup.videoData.video.VideoUri
-import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
-import android.R.attr.orientation
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class FeedFragment : Fragment(), MashupClickListener {
-
     private var _binding: FragmentFeedBinding? = null
-
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val firstFragment = this
 
+        videoList.clear()
         listAllVideos()
 
         if (videoList.isEmpty())
@@ -62,28 +43,18 @@ class FeedFragment : Fragment(), MashupClickListener {
         }
 
         binding.fab.setOnClickListener { view ->
-            findNavController().navigate(R.id.action_FirstFragment_to_creatorFragment)
+            val action =
+                FeedFragmentDirections.actionFirstFragmentToCreatorFragment(
+                    null,
+                    null
+                )
+
+            findNavController().navigate(action)
         }
-
         return binding.root
-
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment, )
-//        }
-
-
-    }
-
-    override fun onClick(video: Video)
-    {
-//        val intent = Intent(context, SecondFragment::class.java)
-//        intent.putExtra(VIDEO_ID_EXTRA, video.id)
-//        startActivity(intent)
+    override fun onClick(video: Video) {
         val action = FeedFragmentDirections.actionFirstFragmentToSecondFragment(video)
         findNavController().navigate(action)
     }
@@ -93,32 +64,25 @@ class FeedFragment : Fragment(), MashupClickListener {
         _binding = null
     }
 
-    private fun listAllVideos()
-    {
-        val folder = File(
-            requireContext().getExternalFilesDir(null),
-            "Mashup"
+    private fun listAllVideos() {
+        val directory = File(
+            requireContext().applicationInfo.dataDir, "results"
         )
+        if (!directory.exists()) {
+            directory.mkdirs()
+        }
 
-        if (!folder.exists()) {
-            folder.mkdirs()
-        }
-        val directory = File(folder, "video")
-//        Log.d("Files", "Path: $path")
-//        val directory = File(path)
         val files = directory.listFiles()
-        if (files != null) {
-            Log.d("Files", "Size: " + files.size)
-        }
         if (files != null) {
             for (i in files.indices) {
                 val file = files[i];
-                val extension: String = file.absolutePath.substring(file.absolutePath.lastIndexOf("."));
-                Log.i("fileGetting", extension)
-                if(!extension.equals(".mp4")) continue;
+                val extension: String =
+                    file.absolutePath.substring(file.absolutePath.lastIndexOf("."));
+                if (!extension.equals(".mp4")) continue;
 
                 val uri = file.toUri();
-                val parcelFileDescriptor = requireContext().contentResolver.openFileDescriptor(uri, "r")
+                val parcelFileDescriptor =
+                    requireContext().contentResolver.openFileDescriptor(uri, "r")
                 val fileDescriptor = parcelFileDescriptor!!.fileDescriptor;
                 val retriever =
                     MediaMetadataRetriever(); //use one of overloaded setDataSource() functions to set your data source
@@ -128,7 +92,8 @@ class FeedFragment : Fragment(), MashupClickListener {
                 if (title == null) {
                     title = uri.toString().split("/").last();
                 }
-                val thumbnail = retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+                val thumbnail =
+                    retriever.getFrameAtTime(0, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
                 retriever.release()
 
 

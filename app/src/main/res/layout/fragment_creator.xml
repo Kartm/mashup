@@ -124,19 +124,5 @@
             app:layout_constraintEnd_toStartOf="@+id/playPauseButton"
             app:layout_constraintTop_toTopOf="@+id/playPauseButton"
             android:contentDescription="@string/rewindButton_description" />
-
-<!--        <Button-->
-<!--            android:id="@+id/saveButton"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="?android:selectableItemBackground"-->
-<!--            android:drawableLeft="@drawable/icon_save"-->
-<!--            android:text="@string/save_button_text"-->
-<!--            android:textColor="@color/secondaryColor"-->
-<!--            android:textSize="16sp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
