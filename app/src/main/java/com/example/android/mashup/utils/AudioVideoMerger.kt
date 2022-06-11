@@ -17,16 +17,7 @@ interface FFMpegCallback {
     fun onFinish() {}
 }
 
-object Utils {
-    fun getConvertedFile(folder: String, fileName: String): File {
-        val f = File(folder)
 
-        if (!f.exists())
-            f.mkdirs()
-
-        return File(f.path + File.separator + fileName)
-    }
-}
 
 class AudioVideoMerger private constructor(private val context: Context) {
     private var audio: File? = null
@@ -87,7 +78,7 @@ class AudioVideoMerger private constructor(private val context: Context) {
             return
         }
 
-        val outputLocation = Utils.getConvertedFile(outputPath, outputFileName)
+        val outputLocation = getConvertedFile(outputPath, outputFileName)
 
         // todo replace audio stream https://superuser.com/a/277667
         // todo -shortest https://superuser.com/questions/277642/how-to-merge-audio-and-video-file-in-ffmpeg#comment1484018_862903
@@ -147,6 +138,15 @@ class AudioVideoMerger private constructor(private val context: Context) {
     }
 
     companion object {
+        fun getConvertedFile(folder: String, fileName: String): File {
+            val f = File(folder)
+
+            if (!f.exists())
+                f.mkdirs()
+
+            return File(f.path + File.separator + fileName)
+        }
+
         fun with(context: Context): AudioVideoMerger {
             return AudioVideoMerger(context)
         }

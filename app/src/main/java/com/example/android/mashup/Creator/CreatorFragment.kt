@@ -16,6 +16,7 @@ import com.example.android.mashup.CreatorVideo.CreatorChooseVideoFragmentDirecti
 import com.example.android.mashup.R
 import com.example.android.mashup.databinding.FragmentCreatorBinding
 import com.example.android.mashup.utils.AudioVideoMerger
+import com.example.android.mashup.utils.AudioVideoMerger.Companion.with
 import com.example.android.mashup.utils.AudioWaveformGenerator
 import com.example.android.mashup.utils.FFMpegCallback
 import com.example.android.mashup.utils.OutputType
@@ -164,7 +165,7 @@ class CreatorFragment : Fragment(), FFMpegCallback {
     }
 
     private fun generateWaveform(audioFile: File, filename: File) {
-        AudioWaveformGenerator.with(requireContext())
+        with(requireContext())
             .setAudioFile(audioFile)
             .setOutputPath(filename!!.absolutePath)
             .setOutputFileName("waveform_" + System.currentTimeMillis() + ".png")
