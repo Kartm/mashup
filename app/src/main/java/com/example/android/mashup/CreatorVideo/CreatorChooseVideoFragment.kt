@@ -24,6 +24,8 @@ import com.example.android.mashup.Video
 import com.example.android.mashup.videoData.video.VideoUri
 import com.example.android.mashup.videoData.video.VideoUriViewModel
 import com.example.android.mashup.databinding.FragmentCreatorChooseVideoBinding
+import com.example.android.mashup.utils.VideoUtils.Companion.GetVideoDataFromUri
+import com.example.android.mashup.utils.VideoUtils.Companion.convertBitmapToByteArray
 import java.io.*
 
 class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
@@ -80,10 +82,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         return videos;
     }
 
-    private fun GetVideoDataFromUri(videoUri: VideoUri): Video {
-        val thumbnail: Bitmap = convertCompressedByteArrayToBitmap(videoUri.thumbnail)
-        return Video(videoUri.uri, thumbnail, videoUri.name, videoUri.length);
-    }
+
 
     override fun onClick(video: Video) {
         val action =
@@ -169,27 +168,7 @@ class CreatorChooseVideoFragment : Fragment(), MashupClickListener {
         };
     }
 
-    private fun convertBitmapToByteArray(bitmap: Bitmap): ByteArray? {
-        var baos: ByteArrayOutputStream? = null
-        return try {
-            baos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-            baos.toByteArray()
-        } finally {
-            if (baos != null) {
-                try {
-                    baos.close()
-                } catch (e: IOException) {
-                    Log.i(
-                        "app",
-                        "ByteArrayOutputStream was not closed"
-                    )
-                }
-            }
-        }
-    }
 
-    private fun convertCompressedByteArrayToBitmap(src: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(src, 0, src.size)
-    }
+
+
 }

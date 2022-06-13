@@ -2,6 +2,7 @@ package com.example.android.mashup.utils
 
 import android.content.Context
 import android.util.Log
+import com.example.android.mashup.utils.AudioVideoMerger.Companion.getConvertedFile
 import com.simform.videooperations.CallBackOfQuery
 import com.simform.videooperations.FFmpegCallBack
 import com.simform.videooperations.LogMessage
@@ -45,7 +46,7 @@ class AudioWaveformGenerator private constructor(private val context: Context) {
             return
         }
 
-        val outputLocation = Utils.getConvertedFile(outputPath, outputFileName)
+        val outputLocation = getConvertedFile(outputPath, outputFileName)
 
         val query = arrayOf("-i", audio!!.path, "-filter_complex", "showwavespic=s=640x120:colors=gray", "-frames:v", "1", outputLocation.path)
 
@@ -55,11 +56,5 @@ class AudioWaveformGenerator private constructor(private val context: Context) {
                 callback!!.onSuccess(outputLocation, OutputType.WAVEFORM)
             }
         })
-    }
-
-    companion object {
-        fun with(context: Context): AudioWaveformGenerator {
-            return AudioWaveformGenerator(context)
-        }
     }
 }
