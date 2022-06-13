@@ -20,7 +20,7 @@ import org.mockito.Mockito.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(AndroidJUnit4::class)
-class   ExampleInstrumentedTest {
+class   NavigationTest {
     @Test
     fun testCancelNavigation() {
         // Create a mock NavController
